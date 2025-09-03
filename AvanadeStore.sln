@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{CCAE4697-FD17-24BD-71AD-BD79F9D7B6B5}"
 	ProjectSection(SolutionItems) = preProject
+		AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices-Containers.jpg = AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices-Containers.jpg
+		AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices-Fluxo-pedido.jpg = AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices-Fluxo-pedido.jpg
 		AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices.drawio = AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices.drawio
 	EndProjectSection
 EndProject
