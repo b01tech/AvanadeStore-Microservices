@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{CCAE4697-FD17-24BD-71AD-BD79F9D7B6B5}"
+	ProjectSection(SolutionItems) = preProject
+		AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices.drawio = AvanadeStore.Gateway\Diagrams\AvanadeStore-Microservices.drawio
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AvanadeStore.Auth", "AvanadeStore.Auth", "{0AE43D5D-8AC0-B704-D299-CB7749451E15}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AvanadeStore.Inventory", "AvanadeStore.Inventory", "{0092D3C2-B811-2780-DEE4-A0ED7ED92DA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AvanadeStore.Sales", "AvanadeStore.Sales", "{4B6F21EC-81CD-3141-C822-E5AA2A3A110F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AvanadeStore.Gateway", "AvanadeStore.Gateway", "{652ABBDB-AD5A-E941-AE92-F542FAE0F2E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E344594F-29C7-60CC-6399-61C997BA9BA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{828A0CDE-36EA-774A-80AE-DFD3A3DDA76C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{089100B1-113F-4E66-888A-E83F3999EAFD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.API", "AvanadeStore.Auth\src\Auth.API\Auth.API.csproj", "{47E8F13E-5C8E-4911-AC44-056D5B893C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.API", "AvanadeStore.Inventory\src\Inventory.API\Inventory.API.csproj", "{FAC525F4-0C44-4CCD-BBB9-CC33413866F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sales.API", "AvanadeStore.Sales\src\Sales.API\Sales.API.csproj", "{0871E23A-FA72-40E9-A309-0CE1C74AB187}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A961AD36-524D-D45B-1BA6-B67B7E47997F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.API", "AvanadeStore.Gateway\src\Gateway.API\Gateway.API.csproj", "{B3E60AA6-A084-4BCA-AD70-A4059B6772FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47E8F13E-5C8E-4911-AC44-056D5B893C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47E8F13E-5C8E-4911-AC44-056D5B893C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47E8F13E-5C8E-4911-AC44-056D5B893C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47E8F13E-5C8E-4911-AC44-056D5B893C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC525F4-0C44-4CCD-BBB9-CC33413866F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC525F4-0C44-4CCD-BBB9-CC33413866F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC525F4-0C44-4CCD-BBB9-CC33413866F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC525F4-0C44-4CCD-BBB9-CC33413866F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0871E23A-FA72-40E9-A309-0CE1C74AB187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0871E23A-FA72-40E9-A309-0CE1C74AB187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0871E23A-FA72-40E9-A309-0CE1C74AB187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0871E23A-FA72-40E9-A309-0CE1C74AB187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCAE4697-FD17-24BD-71AD-BD79F9D7B6B5} = {652ABBDB-AD5A-E941-AE92-F542FAE0F2E8}
+		{3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA} = {0AE43D5D-8AC0-B704-D299-CB7749451E15}
+		{E344594F-29C7-60CC-6399-61C997BA9BA1} = {0092D3C2-B811-2780-DEE4-A0ED7ED92DA9}
+		{828A0CDE-36EA-774A-80AE-DFD3A3DDA76C} = {4B6F21EC-81CD-3141-C822-E5AA2A3A110F}
+		{47E8F13E-5C8E-4911-AC44-056D5B893C8E} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
+		{FAC525F4-0C44-4CCD-BBB9-CC33413866F7} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
+		{0871E23A-FA72-40E9-A309-0CE1C74AB187} = {828A0CDE-36EA-774A-80AE-DFD3A3DDA76C}
+		{A961AD36-524D-D45B-1BA6-B67B7E47997F} = {652ABBDB-AD5A-E941-AE92-F542FAE0F2E8}
+		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC} = {A961AD36-524D-D45B-1BA6-B67B7E47997F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D4A9F87-E036-409B-8B02-B77AC6646984}
+	EndGlobalSection
+EndGlobal
