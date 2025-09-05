@@ -14,5 +14,13 @@ public class CreateClientValidator : AbstractValidator<RequestCreateClientDTO>
         {
             RuleFor(u => u.Email).EmailAddress().WithMessage(ResourceErrorMessages.EMAIL_INVALID);
         });
+        RuleFor(u => u.Cpf).NotEmpty().Must(IsAValidCpfFormat).WithMessage(ResourceErrorMessages.CPF_INVALID);
+    }
+    private static bool IsAValidCpfFormat(string cpf)
+    {
+        if (string.IsNullOrWhiteSpace(cpf))
+            return false;
+        cpf = new string(cpf.Where(char.IsDigit).ToArray());
+        return cpf.Length == 11 && cpf.Distinct().Count() > 1;
     }
 }
