@@ -1,3 +1,4 @@
+using Auth.Application.Services.Criptography;
 using Auth.Application.UseCases.Client;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,11 @@ public static class ServicesExtensions
     {
         services.AddScoped<ICreateClientUseCase, CreateClientUseCase>();
 
+        return services;
+    }
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+         services.AddScoped<IEncrypter, Encrypter>();
         return services;
     }
 }

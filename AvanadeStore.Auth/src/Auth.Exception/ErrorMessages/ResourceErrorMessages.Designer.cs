@@ -124,6 +124,15 @@ namespace Auth.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falha ao carregar chave de criptografia.
+        /// </summary>
+        public static string SECRETKEY_ERROR {
+            get {
+                return ResourceManager.GetString("SECRETKEY_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erro desconhecido.
         /// </summary>
         public static string UNKNOWN_ERROR {
