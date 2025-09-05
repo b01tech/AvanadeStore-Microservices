@@ -40,8 +40,10 @@ public class ExceptionHandlerMiddleware
         await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, ResourceErrorMessages.UNKNOWN_ERROR));
     }
 
-    private static async Task HandleCustomException(HttpContext httpContext, CustomAppException exception)
+    private async Task HandleCustomException(HttpContext httpContext, CustomAppException exception)
     {
+        _logger.LogError(message: exception.Message);
+
         if (exception is OnValidationException)
         {
             var status = StatusCodes.Status400BadRequest;
