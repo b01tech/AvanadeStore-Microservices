@@ -32,7 +32,8 @@ internal class ClientRepository : IClientRepository
     }
     public async Task<bool> ExistsByCpfAsync(string cpf)
     {
-        return await _context.Clients.AnyAsync(c => c.Cpf.Value.Equals(cpf));
+        var clients = await _context.Clients.ToListAsync();
+        return clients.Any(c => c.Cpf.Value.Equals(cpf));
     }
     public async Task<Client?> AddAsync(Client client)
     {

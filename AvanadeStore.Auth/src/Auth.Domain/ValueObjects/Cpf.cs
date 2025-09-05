@@ -9,10 +9,10 @@ public class Cpf
     {
         if (!IsValid(value))
             throw new OnValidationException(ResourceErrorMessages.CPF_INVALID);
-        Value = value;
+        Value = FormatCpf(value);
     }
     private bool IsValid(string cpf)
-    {        
+    {
         cpf = new string(cpf.Where(char.IsDigit).ToArray());
 
         // Validation
@@ -38,5 +38,14 @@ public class Cpf
             return false;
         return true;
     }
+    private static string FormatCpf(string cpf)
+    {
+        // Remove dots and hyphen
+        cpf = new string(cpf.Where(char.IsDigit).ToArray());
+
+        // Format as XXX.XXX.XXX-XX
+        return $"{cpf.Substring(0, 3)}.{cpf.Substring(3, 3)}.{cpf.Substring(6, 3)}-{cpf.Substring(9, 2)}";
+    }
+
     public override string ToString() => Value;
 }
