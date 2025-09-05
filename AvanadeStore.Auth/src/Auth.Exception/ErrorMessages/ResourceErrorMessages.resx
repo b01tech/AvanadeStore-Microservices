@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CPF_ALREADY_REGISTERED" xml:space="preserve">
+    <value>Cpf já registrado</value>
+  </data>
   <data name="CPF_INVALID" xml:space="preserve">
     <value>Cpf informado no formato inválido</value>
+  </data>
+  <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
+    <value>Email já registrado</value>
   </data>
   <data name="EMAIL_EMPTY" xml:space="preserve">
     <value>O email não pode ser vazio</value>

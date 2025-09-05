@@ -3,6 +3,7 @@ using Auth.Application.DTOs.Responses;
 using Auth.Application.Services.Criptography;
 using Auth.Domain.Interfaces;
 using Auth.Exception.CustomExceptions;
+using Auth.Exception.ErrorMessages;
 using MapsterMapper;
 
 namespace Auth.Application.UseCases.Client;
@@ -34,10 +35,18 @@ internal class CreateClientUseCase : ICreateClientUseCase
         return await Task.FromResult(response);
     }
 
-    private static async Task ValidateAsync(RequestCreateClientDTO request)
+    private async Task ValidateAsync(RequestCreateClientDTO request)
     {
         var validator = new CreateClientValidator();
         var result = await validator.ValidateAsync(request);
+
+        var isEmailAlreadyRegistered = await _repository.ExistsByEmailAsync(request.Email);
+        var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(request.Cpf);
+
+        if (isEmailAlreadyRegistered)
+            result.Errors.Add(new FluentValidation.Results.ValidationFailure("", ResourceErrorMessages.EMAIL_ALREADY_REGISTERED));
+        if (isCpfAlreadyRegistered)
+            result.Errors.Add(new FluentValidation.Results.ValidationFailure("", ResourceErrorMessages.CPF_ALREADY_REGISTERED));
         if (!result.IsValid)
         {
             var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();

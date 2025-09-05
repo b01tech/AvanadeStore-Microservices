@@ -61,11 +61,29 @@ namespace Auth.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cpf já registrado.
+        /// </summary>
+        public static string CPF_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("CPF_ALREADY_REGISTERED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cpf informado no formato inválido.
         /// </summary>
         public static string CPF_INVALID {
             get {
                 return ResourceManager.GetString("CPF_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email já registrado.
+        /// </summary>
+        public static string EMAIL_ALREADY_REGISTERED {
+            get {
+                return ResourceManager.GetString("EMAIL_ALREADY_REGISTERED", resourceCulture);
             }
         }
         
