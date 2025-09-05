@@ -1,3 +1,4 @@
+using Auth.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.Infra.Data;
@@ -31,13 +32,13 @@ public class AuthDbContext : DbContext
             entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Role).IsRequired().HasConversion<string>().HasMaxLength(50);
 
-            entity.OwnsOne(e => e.Cpf, cpf =>
-            {
-                cpf.Property(c => c.Value)
-                    .HasColumnName("Cpf")
-                    .IsRequired()
-                    .HasMaxLength(14);
-            });
+            entity.Property(e => e.Cpf)
+            .HasConversion(
+                v => v.Value,
+                v => new Cpf(v))
+            .HasColumnName("Cpf")
+            .IsRequired()
+            .HasMaxLength(14);
 
             entity.HasIndex(e => e.Email).IsUnique();
             entity.HasIndex(e => e.Cpf).IsUnique();

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Auth.Exception\Auth.Exception.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
