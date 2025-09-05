@@ -1,14 +1,9 @@
-var builder = WebApplication.CreateBuilder(args);
+using Auth.API.Extensions;
 
-builder.Services.AddOpenApi();
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddApiDocumentation();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
+app.MapApiDocumentation();
 app.UseHttpsRedirection();
-
 app.Run();
