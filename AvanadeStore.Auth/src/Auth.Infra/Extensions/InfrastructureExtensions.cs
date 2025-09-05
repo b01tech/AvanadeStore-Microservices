@@ -1,4 +1,6 @@
+using Auth.Domain.Interfaces;
 using Auth.Infra.Data;
+using Auth.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,7 @@ public static class InfrastructureExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         AddContext(services, config);
+        AddRepositories(services);
         return services;
     }
 
@@ -19,5 +22,10 @@ public static class InfrastructureExtensions
             var connectionString = config.GetConnectionString("AuthConnection");
             opt.UseSqlServer(connectionString);
         });
+    }
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IClientRepository, ClientRepository>();
     }
 }
