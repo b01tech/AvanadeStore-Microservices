@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Domain", "AvanadeStore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Exception", "AvanadeStore.Auth\src\Auth.Exception\Auth.Exception.csproj", "{6B96708E-4900-47E3-A0B9-AEEEC20FF660}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Application", "AvanadeStore.Auth\src\Auth.Application\Auth.Application.csproj", "{C246CE2B-DC65-4C7A-ADF9-A062BC472F26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{6B96708E-4900-47E3-A0B9-AEEEC20FF660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B96708E-4900-47E3-A0B9-AEEEC20FF660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B96708E-4900-47E3-A0B9-AEEEC20FF660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{B3E60AA6-A084-4BCA-AD70-A4059B6772FC} = {A961AD36-524D-D45B-1BA6-B67B7E47997F}
 		{F4298D43-9F2A-4126-A305-5120835E1D30} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
 		{6B96708E-4900-47E3-A0B9-AEEEC20FF660} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
+		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D4A9F87-E036-409B-8B02-B77AC6646984}

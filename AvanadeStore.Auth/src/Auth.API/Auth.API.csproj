@@ -11,4 +11,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.7.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Auth.Application\Auth.Application.csproj" />
+    <ProjectReference Include="..\Auth.Exception\Auth.Exception.csproj" />
+  </ItemGroup>
+
 </Project>
