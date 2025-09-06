@@ -40,20 +40,17 @@ internal class CreateClientUseCase : ICreateClientUseCase
     {
         var validator = new CreateClientValidator();
         var result = await validator.ValidateAsync(request);
-
-        var isEmailAlreadyRegistered = await _repository.ExistsByEmailAsync(request.Email);
-        var cpf = new Cpf(request.Cpf);
-
-        var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(cpf.Value);
-
-        if (isEmailAlreadyRegistered)
-            result.Errors.Add(new FluentValidation.Results.ValidationFailure("", ResourceErrorMessages.EMAIL_ALREADY_REGISTERED));
-        if (isCpfAlreadyRegistered)
-            result.Errors.Add(new FluentValidation.Results.ValidationFailure("", ResourceErrorMessages.CPF_ALREADY_REGISTERED));
         if (!result.IsValid)
         {
             var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
             throw new OnValidationException(errorMessages);
         }
+        var isEmailAlreadyRegistered = await _repository.ExistsByEmailAsync(request.Email);
+        if (isEmailAlreadyRegistered)
+            throw new OnValidationException(ResourceErrorMessages.EMAIL_ALREADY_REGISTERED);
+        var cpf = new Cpf(request.Cpf);
+        var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(cpf.Value);
+        if (isCpfAlreadyRegistered)
+            throw new OnValidationException(ResourceErrorMessages.CPF_ALREADY_REGISTERED));
     }
 }
