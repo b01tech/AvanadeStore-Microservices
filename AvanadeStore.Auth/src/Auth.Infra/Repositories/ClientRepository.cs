@@ -1,5 +1,6 @@
 using Auth.Domain.Entities;
 using Auth.Domain.Interfaces;
+using Auth.Domain.ValueObjects;
 using Auth.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +24,9 @@ internal class ClientRepository : IClientRepository
     }
     public async Task<Client?> GetByCpfAndPasswordAsync(string cpf, string passwordHash)
     {
-        return await _context.Clients
-            .FirstOrDefaultAsync(c => c.IsActive && c.Cpf.Value.Equals(c) && c.PasswordHash.Equals(passwordHash));
+        var cpfVO = new Cpf(cpf);
+        var result = await _context.Clients.FirstOrDefaultAsync(c => c.IsActive && c.Cpf.Equals(cpfVO) && c.PasswordHash.Equals(passwordHash));
+        return result;
     }
     public async Task<bool> ExistsByEmailAsync(string email)
     {
