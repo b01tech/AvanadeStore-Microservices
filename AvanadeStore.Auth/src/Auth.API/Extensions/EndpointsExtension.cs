@@ -1,5 +1,6 @@
 using Auth.Application.DTOs.Requests;
 using Auth.Application.UseCases.Client;
+using Auth.Application.UseCases.Login;
 
 namespace Auth.API.Extensions;
 
@@ -25,13 +26,15 @@ public static class EndpointsExtension
     private static void MapLoginEndpoints(WebApplication app)
     {
         var group = app.MapGroup("/login").WithTags("Login").WithOpenApi();
-        group.MapPost("/cpf", () =>
+        group.MapPost("/cpf", async (RequestLoginByCpfDTO request, ILoginUseCase useCase) =>
         {
-            return Results.Ok("login by cpf endpoint");
+            var result = await useCase.LoginByCpf(request); 
+            return Results.Ok(result);
         });
-        group.MapPost("/email", () =>
+        group.MapPost("/email", async (RequestLoginByEmailDTO request, ILoginUseCase useCase) =>
         {
-            return Results.Ok("login by email endpoint");
+            var result = await useCase.LoginByEmail(request);
+            return Results.Ok(result);
         });
     }
 }
