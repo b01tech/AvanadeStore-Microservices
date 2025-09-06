@@ -20,7 +20,8 @@ public static class InfrastructureExtensions
         services.AddDbContext<AuthDbContext>(opt =>
         {
             var connectionString = config.GetConnectionString("AuthConnection");
-            opt.UseSqlServer(connectionString);
+            opt.UseSqlServer(connectionString,
+            sqlOptions => sqlOptions.EnableRetryOnFailure());
         });
     }
     private static void AddRepositories(IServiceCollection services)

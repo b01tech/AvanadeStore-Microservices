@@ -2,6 +2,7 @@ using Auth.Application.DTOs.Requests;
 using Auth.Application.DTOs.Responses;
 using Auth.Application.Services.Criptography;
 using Auth.Domain.Interfaces;
+using Auth.Domain.ValueObjects;
 using Auth.Exception.CustomExceptions;
 using Auth.Exception.ErrorMessages;
 using MapsterMapper;
@@ -41,7 +42,9 @@ internal class CreateClientUseCase : ICreateClientUseCase
         var result = await validator.ValidateAsync(request);
 
         var isEmailAlreadyRegistered = await _repository.ExistsByEmailAsync(request.Email);
-        var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(request.Cpf);
+        var cpf = new Cpf(request.Cpf);
+
+        var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(cpf.Value);
 
         if (isEmailAlreadyRegistered)
             result.Errors.Add(new FluentValidation.Results.ValidationFailure("", ResourceErrorMessages.EMAIL_ALREADY_REGISTERED));
@@ -51,6 +54,6 @@ internal class CreateClientUseCase : ICreateClientUseCase
         {
             var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
             throw new OnValidationException(errorMessages);
-        }          
+        }
     }
 }
