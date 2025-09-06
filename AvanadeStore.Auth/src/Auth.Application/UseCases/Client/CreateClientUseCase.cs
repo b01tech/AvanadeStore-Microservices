@@ -51,6 +51,6 @@ internal class CreateClientUseCase : ICreateClientUseCase
         var cpf = new Cpf(request.Cpf);
         var isCpfAlreadyRegistered = await _repository.ExistsByCpfAsync(cpf.Value);
         if (isCpfAlreadyRegistered)
-            throw new OnValidationException(ResourceErrorMessages.CPF_ALREADY_REGISTERED));
+            throw new OnValidationException(ResourceErrorMessages.CPF_ALREADY_REGISTERED);
     }
 }
