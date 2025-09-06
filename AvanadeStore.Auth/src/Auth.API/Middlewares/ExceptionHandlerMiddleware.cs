@@ -49,6 +49,11 @@ public class ExceptionHandlerMiddleware
             var status = StatusCodes.Status400BadRequest;
             httpContext.Response.StatusCode = status;
             await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }else if (exception is NotAuthorizedException)
+        {
+            var status = StatusCodes.Status401Unauthorized;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
         }
     }
 }
