@@ -115,6 +115,15 @@ namespace Auth.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credenciais incorretas.
+        /// </summary>
+        public static string LOGIN_FAIL {
+            get {
+                return ResourceManager.GetString("LOGIN_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O nome não pode ser vazio.
         /// </summary>
         public static string NAME_EMPTY {

@@ -135,6 +135,9 @@
   <data name="EMPLOYEE_ROLE_INVALID" xml:space="preserve">
     <value>Função inválida para funcionários</value>
   </data>
+  <data name="LOGIN_FAIL" xml:space="preserve">
+    <value>Credenciais incorretas</value>
+  </data>
   <data name="NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode ser vazio</value>
   </data>
