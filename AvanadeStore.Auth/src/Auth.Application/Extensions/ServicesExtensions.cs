@@ -1,6 +1,7 @@
 using Auth.Application.Services.Criptography;
 using Auth.Application.Services.Mapping;
 using Auth.Application.UseCases.Client;
+using Auth.Application.UseCases.Login;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class ServicesExtensions
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<ICreateClientUseCase, CreateClientUseCase>();
+        services.AddScoped<ILoginUseCase, LoginUseCase>();
 
         return services;
     }
