@@ -14,18 +14,20 @@ internal class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync(int page = 1)
+    public async Task<IEnumerable<Product>> GetAllAsync()
     {
         var products = await _context.Products
-            .AsNoTracking()
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
+            .AsNoTracking()            
             .ToListAsync();
         return products;
     }
     public async Task<Product?> GetAsync(long productId)
     {
         return await _context.Products.FindAsync(productId);
+    }
+    public async Task<bool> GetByName(string productName)
+    {
+        return await _context.Products.AnyAsync(p => p.Name.ToLowerInvariant() == productName.ToLowerInvariant());
     }
     public async Task<bool> CheckStockAsync(long productId, int quantity)
     {
