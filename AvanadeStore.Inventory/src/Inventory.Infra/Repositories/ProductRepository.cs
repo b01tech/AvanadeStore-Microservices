@@ -27,7 +27,7 @@ internal class ProductRepository : IProductRepository
     }
     public async Task<bool> GetByName(string productName)
     {
-        return await _context.Products.AnyAsync(p => p.Name.ToLowerInvariant() == productName.ToLowerInvariant());
+        return await _context.Products.AnyAsync(p => p.Name.ToLower() == productName.ToLower());
     }
     public async Task<bool> CheckStockAsync(long productId, int quantity)
     {
