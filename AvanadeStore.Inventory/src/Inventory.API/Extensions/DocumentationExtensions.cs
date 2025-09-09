@@ -13,9 +13,9 @@ public static class DocumentationExtensions
             {
                 doc.Info = new OpenApiInfo
                 {
-                    Title = "Auth API - Avanade Store",
+                    Title = "Inventory API - Avanade Store",
                     Version = "v1",
-                    Description = "API de autenticação",
+                    Description = "API de gestão de estoque de produtos",
                 };
                 return Task.CompletedTask;
             });
