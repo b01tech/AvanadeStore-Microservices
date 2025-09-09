@@ -7,6 +7,7 @@ public static class ServicesExtensions
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<IGetProductUseCase, GetProductUseCase>();
+        services.AddScoped<ICreateProductUseCase, CreateProductUseCase>();
         return services;
     }
 }

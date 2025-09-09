@@ -1,4 +1,5 @@
 
+using Inventory.Application.DTOs.Requests;
 using Inventory.Application.DTOs.Responses;
 using Inventory.Application.UseCases.Product;
 
@@ -16,7 +17,7 @@ public static class EndpointsExtensions
     {
         var group = app.MapGroup("/product").WithTags("Product").WithOpenApi();
 
-        group.MapGet("/{page:int}", async (IGetProductUseCase useCase, int page = 1) =>
+        group.MapGet("/list/{page:int}", async (IGetProductUseCase useCase, int page = 1) =>
         {
             var result = await useCase.ExecuteGetAllAsync(page);
             return result;
@@ -30,5 +31,14 @@ public static class EndpointsExtensions
         }).WithDescription("**Obtém um produto pelo ID**")
         .Produces<ResponseProductDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapPost("/", async (ICreateProductUseCase useCase, RequestCreateProductDTO request) =>
+        {
+            var result = await useCase.ExecuteAsync(request);
+            return Results.Created(string.Empty, result);
+        }).WithDescription("**Cria um novo produto**")
+            .Produces(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status409Conflict);
     }
 }
