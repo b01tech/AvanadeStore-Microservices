@@ -16,7 +16,41 @@ public static class DocumentationExtensions
                     Title = "Inventory API - Avanade Store",
                     Version = "v1",
                     Description = "API de gestão de estoque de produtos",
+                };                
+                doc.Components = new OpenApiComponents
+                {
+                    SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
+                    {
+                        ["Bearer"] = new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.Http,
+                            Scheme = "bearer",
+                            BearerFormat = "JWT",
+                            Description = "Insira o token JWT no formato: Bearer {seu_token}",
+                            In = ParameterLocation.Header,
+                            Name = "Authorization"
+                        }
+                    }
                 };
+                
+                doc.SecurityRequirements = new List<OpenApiSecurityRequirement>
+                {
+                    new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
+                    }
+                };
+                
                 return Task.CompletedTask;
             });
         });
