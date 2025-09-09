@@ -9,12 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddUseCases()
-    .AddApiDocumentation();
+    .AddApiDocumentation()
+    .AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 app.MapApiDocumentation();
 app.UseExceptionHandlerMiddleware();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapEndpoints();
 
 app.Run();

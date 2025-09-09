@@ -2,6 +2,7 @@
 using Inventory.Application.DTOs.Requests;
 using Inventory.Application.DTOs.Responses;
 using Inventory.Application.UseCases.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inventory.API.Extensions;
 
@@ -22,7 +23,8 @@ public static class EndpointsExtensions
             var result = await useCase.ExecuteGetAllAsync(page);
             return result;
         }).WithDescription("**Obtém todos produtos paginados**")
-            .Produces<ResponseProductsListDTO>(StatusCodes.Status200OK);
+            .Produces<ResponseProductsListDTO>(StatusCodes.Status200OK)
+            .RequireAuthorization();
 
         group.MapGet("/{id:long}", async (long id, IGetProductUseCase useCase) =>
         {
@@ -30,7 +32,8 @@ public static class EndpointsExtensions
             return Results.Ok(result);
         }).WithDescription("**Obtém um produto pelo ID**")
         .Produces<ResponseProductDTO>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound);
+        .Produces(StatusCodes.Status404NotFound)
+        .RequireAuthorization();
 
         group.MapPost("/", async (ICreateProductUseCase useCase, RequestCreateProductDTO request) =>
         {
@@ -39,6 +42,7 @@ public static class EndpointsExtensions
         }).WithDescription("**Cria um novo produto**")
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status409Conflict);
+            .Produces(StatusCodes.Status409Conflict)
+            .RequireAuthorization(policy => policy.RequireRole("Manager"));
     }
 }
