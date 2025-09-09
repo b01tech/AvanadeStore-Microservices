@@ -54,6 +54,7 @@ internal class ClientRepository : IClientRepository
         else
         {
             client.Deactivate();
+            _context.Entry(client).Property(x => x.IsActive).IsModified = true;
             return true;
         }
     }
