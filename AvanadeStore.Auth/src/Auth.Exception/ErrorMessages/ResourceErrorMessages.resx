@@ -123,6 +123,9 @@
   <data name="CPF_INVALID" xml:space="preserve">
     <value>Cpf informado no formato inválido</value>
   </data>
+  <data name="DB_CONNECTION_FAIL" xml:space="preserve">
+    <value>Falha na conexão com banco de dados</value>
+  </data>
   <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
     <value>Email já registrado</value>
   </data>

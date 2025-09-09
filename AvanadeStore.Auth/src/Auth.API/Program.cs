@@ -16,5 +16,6 @@ app.MapApiDocumentation();
 app.UseExceptionHandlerMiddleware();
 app.UseHttpsRedirection();
 app.MapEndpoints();
+app.ApplyMigrations();
 
 app.Run();

@@ -61,6 +61,15 @@ namespace Inventory.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falha na conexão com banco de dados.
+        /// </summary>
+        public static string DB_CONNECTION_FAIL {
+            get {
+                return ResourceManager.GetString("DB_CONNECTION_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O nome não pode se vazio.
         /// </summary>
         public static string NAME_EMPTY {

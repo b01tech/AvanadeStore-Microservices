@@ -79,6 +79,15 @@ namespace Auth.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falha na conexão com banco de dados.
+        /// </summary>
+        public static string DB_CONNECTION_FAIL {
+            get {
+                return ResourceManager.GetString("DB_CONNECTION_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email já registrado.
         /// </summary>
         public static string EMAIL_ALREADY_REGISTERED {
