@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Domain", "Avanade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Exception", "AvanadeStore.Inventory\src\Inventory.Exception\Inventory.Exception.csproj", "{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Infra", "AvanadeStore.Inventory\src\Inventory.Infra\Inventory.Infra.csproj", "{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,6 +100,10 @@ Global
 		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{8662AA0D-0DFB-47A8-A6AB-D90EFF363424} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
 		{3ACF5261-C66F-4491-B573-B24F44BA01CB} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
 		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
+		{8DAF1A62-BBDB-453E-B839-D9D700ACE6E7} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D4A9F87-E036-409B-8B02-B77AC6646984}
