@@ -9,14 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddUseCases()
-    .AddOpenApi();
+    .AddApiDocumentation();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.MapApiDocumentation();
 app.UseExceptionHandlerMiddleware();
 app.UseHttpsRedirection();
 app.MapEndpoints();
