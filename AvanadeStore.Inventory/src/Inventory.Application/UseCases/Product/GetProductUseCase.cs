@@ -21,10 +21,12 @@ internal class GetProductUseCase : IGetProductUseCase
     public async Task<ResponseProductsListDTO> ExecuteGetAllAsync(int page = 1)
     {
         const int pageSize = 10;
-        var products = await _productRepository.GetAllAsync(page);
+        var products = await _productRepository.GetAllAsync();
         var totalItems = products.Count();
         var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
         var productsList = products
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Select(p => new ResponseProductDTO(p.Id, p.Name, p.Description, p.Price, p.Stock))
             .ToList();
         return new ResponseProductsListDTO(productsList, page, totalItems, totalPages);
