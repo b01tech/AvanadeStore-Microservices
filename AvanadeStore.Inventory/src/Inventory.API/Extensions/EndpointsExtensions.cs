@@ -16,6 +16,13 @@ public static class EndpointsExtensions
     {
         var group = app.MapGroup("/product").WithTags("Product").WithOpenApi();
 
+        group.MapGet("/{page:int}", async (IGetProductUseCase useCase, int page = 1) =>
+        {
+            var result = await useCase.ExecuteGetAllAsync(page);
+            return result;
+        }).WithDescription("**Obtém todos produtos paginados**")
+            .Produces<ResponseProductsListDTO>(StatusCodes.Status200OK);
+
         group.MapGet("/{id:long}", async (long id, IGetProductUseCase useCase) =>
         {
             var result = await useCase.ExecuteAsync(id);

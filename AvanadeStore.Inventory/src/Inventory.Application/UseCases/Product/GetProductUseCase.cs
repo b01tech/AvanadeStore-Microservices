@@ -17,4 +17,16 @@ internal class GetProductUseCase : IGetProductUseCase
         var product = await _productRepository.GetAsync(id) ?? throw new ProductNotFoundException(id);
         return new ResponseProductDTO(product.Id, product.Name, product.Description, product.Price, product.Stock);
     }
+
+    public async Task<ResponseProductsListDTO> ExecuteGetAllAsync(int page = 1)
+    {
+        const int pageSize = 10;
+        var products = await _productRepository.GetAllAsync(page);
+        var totalItems = products.Count();
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+        var productsList = products
+            .Select(p => new ResponseProductDTO(p.Id, p.Name, p.Description, p.Price, p.Stock))
+            .ToList();
+        return new ResponseProductsListDTO(productsList, page, totalItems, totalPages);
+    }
 }
