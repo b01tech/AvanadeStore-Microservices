@@ -86,5 +86,14 @@ namespace Inventory.Exception.ErrorMessages {
                 return ResourceManager.GetString("STOCK_NEGATIVE", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erro desconhecido.
+        /// </summary>
+        public static string UNKNOWN_ERROR {
+            get {
+                return ResourceManager.GetString("UNKNOWN_ERROR", resourceCulture);
+            }
+        }
     }
 }

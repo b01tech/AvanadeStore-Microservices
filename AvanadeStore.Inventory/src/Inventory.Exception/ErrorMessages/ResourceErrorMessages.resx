@@ -126,4 +126,7 @@
   <data name="STOCK_NEGATIVE" xml:space="preserve">
     <value>A quantidade em estoque não pode ser negativa</value>
   </data>
+  <data name="UNKNOWN_ERROR" xml:space="preserve">
+    <value>Erro desconhecido</value>
+  </data>
 </root>
