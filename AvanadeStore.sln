@@ -48,6 +48,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Application", "Avanade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Infra", "AvanadeStore.Auth\src\Auth.Infra\Auth.Infra.csproj", "{8662AA0D-0DFB-47A8-A6AB-D90EFF363424}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Domain", "AvanadeStore.Inventory\src\Inventory.Domain\Inventory.Domain.csproj", "{3ACF5261-C66F-4491-B573-B24F44BA01CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Exception", "AvanadeStore.Inventory\src\Inventory.Exception\Inventory.Exception.csproj", "{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +90,14 @@ Global
 		{8662AA0D-0DFB-47A8-A6AB-D90EFF363424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8662AA0D-0DFB-47A8-A6AB-D90EFF363424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8662AA0D-0DFB-47A8-A6AB-D90EFF363424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ACF5261-C66F-4491-B573-B24F44BA01CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ACF5261-C66F-4491-B573-B24F44BA01CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ACF5261-C66F-4491-B573-B24F44BA01CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ACF5261-C66F-4491-B573-B24F44BA01CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +116,8 @@ Global
 		{6B96708E-4900-47E3-A0B9-AEEEC20FF660} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
 		{C246CE2B-DC65-4C7A-ADF9-A062BC472F26} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
 		{8662AA0D-0DFB-47A8-A6AB-D90EFF363424} = {3BA7A7BF-D2DA-6125-C49B-02A874BCD7AA}
+		{3ACF5261-C66F-4491-B573-B24F44BA01CB} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
+		{1CDFC05F-C8F8-44D9-8AF7-2EB6E5689B41} = {E344594F-29C7-60CC-6399-61C997BA9BA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4D4A9F87-E036-409B-8B02-B77AC6646984}
