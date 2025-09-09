@@ -56,6 +56,18 @@ public class ExceptionHandlerMiddleware
             httpContext.Response.StatusCode = status;
             await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
         }
+        else if (exception is InvalidArgumentsException)
+        {
+            var status = StatusCodes.Status400BadRequest;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }
+        else if (exception is AlreadyExistsException)
+        {
+            var status = StatusCodes.Status409Conflict;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }
     }
 }
 public static class ExceptionHandlerMiddlewareExtensions

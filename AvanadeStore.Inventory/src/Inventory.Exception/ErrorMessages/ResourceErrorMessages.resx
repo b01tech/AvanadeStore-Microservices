@@ -123,6 +123,9 @@
   <data name="PRICE_INVALID" xml:space="preserve">
     <value>O preço deve ser maior que zero</value>
   </data>
+  <data name="PRODUCT_ALREADY_REGISTERED" xml:space="preserve">
+    <value>Produto já cadastrado</value>
+  </data>
   <data name="STOCK_NEGATIVE" xml:space="preserve">
     <value>A quantidade em estoque não pode ser negativa</value>
   </data>
