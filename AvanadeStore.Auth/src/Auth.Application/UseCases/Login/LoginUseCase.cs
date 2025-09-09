@@ -1,6 +1,7 @@
 using Auth.Application.DTOs.Requests;
 using Auth.Application.DTOs.Responses;
 using Auth.Application.Services.Criptography;
+using Auth.Application.Services.Token;
 using Auth.Domain.Interfaces;
 using Auth.Domain.ValueObjects;
 using Auth.Exception.CustomExceptions;
@@ -11,11 +12,13 @@ internal class LoginUseCase : ILoginUseCase
 {
     private readonly IEncrypter _encrypter;
     private readonly IClientRepository _repository;
+    private readonly ITokenService _tokenService;
 
-    public LoginUseCase(IEncrypter encrypter, IClientRepository repository)
+    public LoginUseCase(IEncrypter encrypter, IClientRepository repository, ITokenService tokenService)
     {
         _encrypter = encrypter;
         _repository = repository;
+        _tokenService = tokenService;
     }
 
     public async Task<ResponseUserToken> LoginByCpf(RequestLoginByCpfDTO request)
@@ -25,7 +28,8 @@ internal class LoginUseCase : ILoginUseCase
         var passwordHashed = _encrypter.Encrypt(request.Password);
 
         var client = await _repository.GetByCpfAndPasswordAsync(cpf.Value, passwordHashed) ?? throw new NotAuthorizedException(ResourceErrorMessages.LOGIN_FAIL);
-        return new ResponseUserToken(client.Name, DateTime.UtcNow.AddHours(1), "token de teste");
+        var accessToken = _tokenService.GenereteAccessToken(client);
+        return new ResponseUserToken(client.Name, DateTime.UtcNow.AddHours(1), accessToken);
     }
 
     public async Task<ResponseUserToken> LoginByEmail(RequestLoginByEmailDTO request)
@@ -33,7 +37,8 @@ internal class LoginUseCase : ILoginUseCase
         ValidateInputs(request.Email, request.Password);
         var passwordHashed = _encrypter.Encrypt(request.Password);
         var client = await _repository.GetByEmailAndPasswordAsync(request.Email, passwordHashed) ?? throw new NotAuthorizedException(ResourceErrorMessages.LOGIN_FAIL);
-        return new ResponseUserToken(client.Name, DateTime.UtcNow.AddHours(1), "token de teste");
+        var accessToken = _tokenService.GenereteAccessToken(client);
+        return new ResponseUserToken(client.Name, DateTime.UtcNow.AddHours(1), accessToken);
     }
 
     private static void ValidateInputs(string value1, string value2)

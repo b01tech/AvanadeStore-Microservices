@@ -1,5 +1,6 @@
 using Auth.Application.Services.Criptography;
 using Auth.Application.Services.Mapping;
+using Auth.Application.Services.Token;
 using Auth.Application.UseCases.Client;
 using Auth.Application.UseCases.Login;
 using MapsterMapper;
@@ -18,7 +19,8 @@ public static class ServicesExtensions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IEncrypter, Encrypter>();
-        services.RegisterMapster();        
+        services.RegisterMapster();
+        services.AddTransient<ITokenService, TokenService>();
         return services;
     }
 }
