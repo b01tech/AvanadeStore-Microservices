@@ -1,5 +1,7 @@
 using Auth.Application.DTOs.Requests;
+using Auth.Application.DTOs.Responses;
 using Auth.Application.UseCases.Client;
+using Auth.Application.UseCases.Employee;
 using Auth.Application.UseCases.Login;
 
 namespace Auth.API.Extensions;
@@ -9,6 +11,7 @@ public static class EndpointsExtension
     public static WebApplication MapEndpoints(this WebApplication app)
     {
         MapClientEndpoints(app);
+        MapEmployeeEndpoints(app);
         MapLoginEndpoints(app);
         return app;
     }
@@ -21,7 +24,26 @@ public static class EndpointsExtension
         {
             var result = await useCase.ExecuteAsync(request);
             return Results.Created(string.Empty, result);
-        }).WithDescription("Faz cadastro de clientes")
+        }).WithDescription("**Faz cadastro de clientes**")
+        .Produces<ResponseCreateUserDTO>(StatusCodes.Status201Created)
+        .Produces(StatusCodes.Status400BadRequest);
+    }
+
+    private static void MapEmployeeEndpoints(WebApplication app)
+    {
+        var group = app.MapGroup("/employee").WithTags("Employee").WithOpenApi();
+
+        group.MapPost("/", async (RequestCreateEmployeeDTO request, ICreateEmployeeUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(request);
+            return Results.Created(string.Empty, result);
+        }).WithDescription("""
+            **Faz cadastro de funcionários**
+
+            Valores possíveis para Role:
+            - 1: Employee
+            - 2: Manager
+            """)
         .Produces(StatusCodes.Status201Created).Produces(StatusCodes.Status400BadRequest);
     }
     private static void MapLoginEndpoints(WebApplication app)

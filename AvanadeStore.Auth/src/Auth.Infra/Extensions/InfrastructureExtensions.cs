@@ -28,5 +28,6 @@ public static class InfrastructureExtensions
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
     }
 }

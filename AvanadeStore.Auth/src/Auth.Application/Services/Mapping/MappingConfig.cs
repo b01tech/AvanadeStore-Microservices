@@ -13,6 +13,14 @@ public static class MappingConfig
     {
         var config = new TypeAdapterConfig();
 
+        MapClient(config);
+        MapEmployee(config);
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
+    }
+    private static void MapClient(TypeAdapterConfig config)
+    {
         config.NewConfig<RequestCreateClientDTO, Client>()
             .MapWith(src => new Client(
                   src.Name,
@@ -24,8 +32,19 @@ public static class MappingConfig
               .Map(dest => dest.Id, src => src.Id)
               .Map(dest => dest.Name, src => src.Name)
               .Map(dest => dest.CreateAt, src => src.CreatedAt);
-
-        services.AddSingleton(config);
-        services.AddScoped<IMapper, ServiceMapper>();
+    }
+    private static void MapEmployee(TypeAdapterConfig config)
+    {
+        config.NewConfig<RequestCreateEmployeeDTO, Employee>()
+            .MapWith(src => new Employee(
+                  src.Name,
+                  src.Email,
+                  src.Password,
+                  src.Role
+              ));
+        config.NewConfig<Employee, ResponseCreateUserDTO>()
+            .Map(dest => dest.Id, src => src.Id)
+              .Map(dest => dest.Name, src => src.Name)
+              .Map(dest => dest.CreateAt, src => src.CreatedAt);
     }
 }

@@ -147,6 +147,12 @@
   <data name="PASSWORD_INVALID" xml:space="preserve">
     <value>A senha deve ter pelo menos 6 caracteres</value>
   </data>
+  <data name="ROLE_CLIENT_NOT_ALLOWED" xml:space="preserve">
+    <value>"Cargo 'Client' não é permitido para funcionários"</value>
+  </data>
+  <data name="ROLE_INVALID" xml:space="preserve">
+    <value>Função informada inválida</value>
+  </data>
   <data name="SECRETKEY_ERROR" xml:space="preserve">
     <value>Falha ao carregar chave de criptografia</value>
   </data>

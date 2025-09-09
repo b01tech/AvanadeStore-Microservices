@@ -5,4 +5,7 @@ public record RequestCreateClientDTO(string Name, string Email, string Cpf, stri
 {
     public RequestCreateClientDTO WithHashedPassword(string hashedPassword) => this with { Password = hashedPassword };    
 }
-public record RequestCreateEmployeeDTO(string Name, string Email, string Password, UserRole Role);
+public record RequestCreateEmployeeDTO(string Name, string Email, string Password, UserRole Role)
+{
+    public RequestCreateEmployeeDTO WithHashedPassword(string hashedPassword) => this with { Password = hashedPassword };
+};

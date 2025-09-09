@@ -151,6 +151,24 @@ namespace Auth.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Cargo &apos;Client&apos; não é permitido para funcionários&quot;.
+        /// </summary>
+        public static string ROLE_CLIENT_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("ROLE_CLIENT_NOT_ALLOWED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Função informada inválida.
+        /// </summary>
+        public static string ROLE_INVALID {
+            get {
+                return ResourceManager.GetString("ROLE_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Falha ao carregar chave de criptografia.
         /// </summary>
         public static string SECRETKEY_ERROR {
