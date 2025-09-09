@@ -22,7 +22,7 @@ public static class EndpointsExtensions
         {
             var result = await useCase.ExecuteGetAllAsync(page);
             return result;
-        }).WithDescription("**Obtém todos produtos paginados**")
+        }).WithDescription("**Obtém todos produtos paginados**🔑")
             .Produces<ResponseProductsListDTO>(StatusCodes.Status200OK)
             .RequireAuthorization();
 
@@ -30,7 +30,7 @@ public static class EndpointsExtensions
         {
             var result = await useCase.ExecuteAsync(id);
             return Results.Ok(result);
-        }).WithDescription("**Obtém um produto pelo ID**")
+        }).WithDescription("**Obtém um produto pelo ID**🔑")
         .Produces<ResponseProductDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .RequireAuthorization();
@@ -39,7 +39,7 @@ public static class EndpointsExtensions
         {
             var result = await useCase.ExecuteAsync(request);
             return Results.Created(string.Empty, result);
-        }).WithDescription("**Cria um novo produto**")
+        }).WithDescription("**Cria um novo produto**🔑 (Role: Manager)")
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)
