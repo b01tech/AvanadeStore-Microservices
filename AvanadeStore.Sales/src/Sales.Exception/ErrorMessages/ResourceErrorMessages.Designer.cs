@@ -131,5 +131,14 @@ namespace Sales.Exception.ErrorMessages {
                 return ResourceManager.GetString("ORDER_CANNOT_CANCEL", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Falha na conexão com o banco de dados.
+        /// </summary>
+        public static string DB_CONNECTION_FAIL {
+            get {
+                return ResourceManager.GetString("DB_CONNECTION_FAIL", resourceCulture);
+            }
+        }
     }
 }

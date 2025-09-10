@@ -141,4 +141,7 @@
   <data name="ORDER_CANNOT_CANCEL" xml:space="preserve">
     <value>Pedido só pode ser cancelado se estiver Confirmado ou Em Separação</value>
   </data>
+  <data name="DB_CONNECTION_FAIL" xml:space="preserve">
+    <value>Falha na conexão com o banco de dados</value>
+  </data>
 </root>
