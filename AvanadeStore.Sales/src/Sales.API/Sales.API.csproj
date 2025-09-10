@@ -16,11 +16,20 @@
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Scalar.AspNetCore" Version="2.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\AvanadeStore.Auth\src\Auth.API\Auth.API.csproj" />
+    <ProjectReference Include="..\..\..\AvanadeStore.Inventory\src\Inventory.API\Inventory.API.csproj" />
+    <ProjectReference Include="..\..\..\AvanadeStore.Inventory\src\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\..\..\AvanadeStore.Inventory\src\Inventory.Exception\Inventory.Exception.csproj" />
+    <ProjectReference Include="..\Sales.Application\Sales.Application.csproj" />
+    <ProjectReference Include="..\Sales.Exception\Sales.Exception.csproj" />
   </ItemGroup>
 
 </Project>
