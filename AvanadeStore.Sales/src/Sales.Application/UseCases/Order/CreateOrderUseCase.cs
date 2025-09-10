@@ -27,10 +27,8 @@ internal class CreateOrderUseCase : ICreateOrderUseCase
         {
             if (item.Quantity <= 0)
                 throw new InvalidArgumentsException(ResourceErrorMessages.QUANTITY_INVALID);
-            if (item.Price <= 0)
-                throw new InvalidArgumentsException(ResourceErrorMessages.PRICE_INVALID);
 
-            order.AddOrderItem(item.ProductId, item.Quantity, item.Price);
+            order.AddOrderItem(item.ProductId, item.Quantity);
         }
 
         var orderCreated = await _orderRepository.AddAsync(order);
@@ -65,10 +63,8 @@ internal class CreateOrderUseCase : ICreateOrderUseCase
         {
             if (item.Quantity <= 0)
                 throw new InvalidArgumentsException(ResourceErrorMessages.QUANTITY_INVALID);
-            if (item.Price <= 0)
-                throw new InvalidArgumentsException(ResourceErrorMessages.PRICE_INVALID);
 
-            order.AddOrderItem(item.ProductId, item.Quantity, item.Price);
+            order.AddOrderItem(item.ProductId, item.Quantity);
         }
 
         var orderCreated = await _orderRepository.AddAsync(order);

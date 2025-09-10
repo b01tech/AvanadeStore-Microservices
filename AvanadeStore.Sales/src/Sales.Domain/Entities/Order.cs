@@ -37,7 +37,7 @@ public class Order
     public void AddOrderItem(long productId, int quantity, decimal price)
     {
         ValidateCanModifyItems();
-        
+
         var existingItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
         if (existingItem != null)
         {
@@ -49,7 +49,27 @@ public class Order
             orderItem.SetOrderId(Id);
             _orderItems.Add(orderItem);
         }
-        
+
+        CalculateTotal();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void AddOrderItem(long productId, int quantity)
+    {
+        ValidateCanModifyItems();
+
+        var existingItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
+        if (existingItem != null)
+        {
+            existingItem.UpdateQuantity(existingItem.Quantity + quantity);
+        }
+        else
+        {
+            var orderItem = new OrderItem(productId, quantity, 0m);
+            orderItem.SetOrderId(Id);
+            _orderItems.Add(orderItem);
+        }
+
         CalculateTotal();
         UpdatedAt = DateTime.UtcNow;
     }
@@ -57,7 +77,7 @@ public class Order
     public void RemoveOrderItem(long productId)
     {
         ValidateCanModifyItems();
-        
+
         var item = _orderItems.FirstOrDefault(x => x.ProductId == productId);
         if (item != null)
         {
@@ -70,10 +90,10 @@ public class Order
     public void UpdateOrderItemQuantity(long productId, int quantity)
     {
         ValidateCanModifyItems();
-        
+
         var item = _orderItems.FirstOrDefault(x => x.ProductId == productId)
             ?? throw new NotFoundException(ResourceErrorMessages.ORDER_ITEM_NOT_FOUND);
-        
+
         item.UpdateQuantity(quantity);
         CalculateTotal();
         UpdatedAt = DateTime.UtcNow;
