@@ -1,11 +1,14 @@
 using Sales.API.Extensions;
 using Sales.API.Middlewares;
+using Sales.Infra.Extensions;
 
 DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApiDocumentation();
+builder.Services.AddInfrastructure(builder.Configuration)
+    .AddApiDocumentation()
+    .AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 app.MapApiDocumentation();
@@ -14,5 +17,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapEndpoints();
+app.ApplyMigrations();
 
 app.Run();
