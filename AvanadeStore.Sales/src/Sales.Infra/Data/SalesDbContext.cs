@@ -28,6 +28,7 @@ public class SalesDbContext : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.UserId).IsRequired();
             entity.Property(e => e.Total).IsRequired().HasPrecision(18, 2);
             entity.Property(e => e.Status).IsRequired().HasConversion<string>().HasMaxLength(20);
             entity.Property(e => e.CreatedAt).IsRequired();

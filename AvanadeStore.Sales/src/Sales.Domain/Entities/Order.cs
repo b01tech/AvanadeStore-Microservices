@@ -6,6 +6,7 @@ namespace Sales.Domain.Entities;
 public class Order
 {
     public Guid Id { get; init; }
+    public Guid UserId { get; private set; }
     public DateTime CreatedAt { get; init; }
     public DateTime UpdatedAt { get; private set; }
     public decimal Total { get; private set; }
@@ -16,6 +17,17 @@ public class Order
     public Order()
     {
         Id = Guid.CreateVersion7();
+        UserId = Guid.Empty;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+        Status = OrderStatus.Created;
+        Total = 0;
+    }
+
+    public Order(Guid userId)
+    {
+        Id = Guid.CreateVersion7();
+        UserId = userId;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         Status = OrderStatus.Created;

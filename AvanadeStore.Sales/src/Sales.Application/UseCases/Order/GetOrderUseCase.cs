@@ -61,4 +61,32 @@ internal class GetOrderUseCase : IGetOrderUseCase
             
         return new ResponseOrdersListDTO(ordersList, page, totalItems, totalPages);
     }
+
+    public async Task<ResponseOrdersListDTO> ExecuteGetByUserIdAsync(Guid userId, int page = 1)
+    {
+        const int pageSize = 10;
+        var orders = await _orderRepository.GetByUserIdAsync(userId);
+        var totalItems = orders.Count();
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+        
+        var ordersList = orders
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(o => new ResponseOrderDTO(
+                o.Id,
+                o.CreatedAt,
+                o.UpdatedAt,
+                o.Total,
+                o.Status,
+                o.OrderItems.Select(oi => new ResponseOrderItemDTO(
+                    oi.Id,
+                    oi.ProductId,
+                    oi.Quantity,
+                    oi.Price
+                )).ToList()
+            ))
+            .ToList();
+            
+        return new ResponseOrdersListDTO(ordersList, page, totalItems, totalPages);
+    }
 }

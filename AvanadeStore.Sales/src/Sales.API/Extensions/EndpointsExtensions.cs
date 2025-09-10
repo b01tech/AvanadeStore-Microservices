@@ -21,27 +21,42 @@ public static class EndpointsExtensions
         {
             var result = await useCase.ExecuteGetAllAsync(page);
             return result;
-        }).WithDescription("**Obtém todos os pedidos paginados**🔑")
+        }).WithDescription("**Obtém todos os pedidos paginados**🔑 (Role: Employee, Manager)")
             .Produces<ResponseOrdersListDTO>(StatusCodes.Status200OK)
-            .RequireAuthorization();
+            .RequireAuthorization(policy => policy.RequireRole("Employee", "Manager"));
 
         group.MapGet("/{id:guid}", async (Guid id, IGetOrderUseCase useCase) =>
         {
             var result = await useCase.ExecuteAsync(id);
             return Results.Ok(result);
-        }).WithDescription("**Obtém um pedido pelo ID**🔑")
+        }).WithDescription("**Obtém um pedido pelo ID**🔑 (Role: Employee, Manager)")
         .Produces<ResponseOrderDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
-        .RequireAuthorization();
+        .RequireAuthorization(policy => policy.RequireRole("Employee", "Manager"));
+
+        group.MapGet("/my/{page:int}", async (IGetOrderUseCase useCase, HttpContext context, int page = 1) =>
+        {
+            var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var result = await useCase.ExecuteGetByUserIdAsync(Guid.Parse(userId), page);
+            return Results.Ok(result);
+        }).WithDescription("**Obtém os pedidos do cliente logado**🔑 (Role: Client)")
+            .Produces<ResponseOrdersListDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(policy => policy.RequireRole("Client"));
 
         group.MapPost("/", async (ICreateOrderUseCase useCase, RequestCreateOrderDTO request) =>
         {
             var result = await useCase.ExecuteAsync(request);
             return Results.Created(string.Empty, result);
-        }).WithDescription("**Cria um novo pedido**🔑")
+        }).WithDescription("**Cria um novo pedido**🔑 (Role: Client)")
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)
-            .RequireAuthorization();
+            .RequireAuthorization(policy => policy.RequireRole("Client"));
     }
 }

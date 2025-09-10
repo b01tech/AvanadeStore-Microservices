@@ -27,6 +27,14 @@ internal class OrderRepository : IOrderRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .Where(o => o.UserId == userId)
+            .ToListAsync();
+    }
+
     public async Task<Order?> AddAsync(Order order)
     {
         var orderCreated = await _context.Orders.AddAsync(order);
