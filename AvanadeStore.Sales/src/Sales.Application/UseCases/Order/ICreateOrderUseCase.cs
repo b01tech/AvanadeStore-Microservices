@@ -5,4 +5,5 @@ namespace Sales.Application.UseCases.Order;
 public interface ICreateOrderUseCase
 {
     Task<ResponseOrderDTO> ExecuteAsync(RequestCreateOrderDTO request);
+    Task<ResponseOrderDTO> ExecuteAsync(RequestCreateOrderDTO request, Guid userId);
 }

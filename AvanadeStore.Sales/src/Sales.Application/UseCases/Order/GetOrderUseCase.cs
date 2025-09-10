@@ -26,6 +26,7 @@ internal class GetOrderUseCase : IGetOrderUseCase
 
         return new ResponseOrderDTO(
             order.Id,
+            order.UserId,
             order.CreatedAt,
             order.UpdatedAt,
             order.Total,
@@ -46,6 +47,7 @@ internal class GetOrderUseCase : IGetOrderUseCase
             .Take(pageSize)
             .Select(o => new ResponseOrderDTO(
                 o.Id,
+                o.UserId,
                 o.CreatedAt,
                 o.UpdatedAt,
                 o.Total,
@@ -73,18 +75,19 @@ internal class GetOrderUseCase : IGetOrderUseCase
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(o => new ResponseOrderDTO(
-                o.Id,
-                o.CreatedAt,
-                o.UpdatedAt,
-                o.Total,
-                o.Status,
-                o.OrderItems.Select(oi => new ResponseOrderItemDTO(
-                    oi.Id,
-                    oi.ProductId,
-                    oi.Quantity,
-                    oi.Price
-                )).ToList()
-            ))
+                 o.Id,
+                 o.UserId,
+                 o.CreatedAt,
+                 o.UpdatedAt,
+                 o.Total,
+                 o.Status,
+                 o.OrderItems.Select(oi => new ResponseOrderItemDTO(
+                     oi.Id,
+                     oi.ProductId,
+                     oi.Quantity,
+                     oi.Price
+                 )).ToList()
+             ))
             .ToList();
             
         return new ResponseOrdersListDTO(ordersList, page, totalItems, totalPages);

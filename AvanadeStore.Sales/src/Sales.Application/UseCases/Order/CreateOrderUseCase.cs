@@ -45,6 +45,45 @@ internal class CreateOrderUseCase : ICreateOrderUseCase
 
         return new ResponseOrderDTO(
             orderCreated.Id,
+            orderCreated.UserId,
+            orderCreated.CreatedAt,
+            orderCreated.UpdatedAt,
+            orderCreated.Total,
+            orderCreated.Status,
+            orderItems
+        );
+    }
+
+    public async Task<ResponseOrderDTO> ExecuteAsync(RequestCreateOrderDTO request, Guid userId)
+    {
+        if (request.OrderItems == null || !request.OrderItems.Any())
+            throw new InvalidArgumentsException(ResourceErrorMessages.ORDER_ITEMS_EMPTY);
+
+        var order = new Domain.Entities.Order(userId);
+
+        foreach (var item in request.OrderItems)
+        {
+            if (item.Quantity <= 0)
+                throw new InvalidArgumentsException(ResourceErrorMessages.QUANTITY_INVALID);
+            if (item.Price <= 0)
+                throw new InvalidArgumentsException(ResourceErrorMessages.PRICE_INVALID);
+
+            order.AddOrderItem(item.ProductId, item.Quantity, item.Price);
+        }
+
+        var orderCreated = await _orderRepository.AddAsync(order);
+        await _unitOfWork.CommitAsync();
+
+        var orderItems = orderCreated!.OrderItems.Select(oi => new ResponseOrderItemDTO(
+            oi.Id,
+            oi.ProductId,
+            oi.Quantity,
+            oi.Price
+        )).ToList();
+
+        return new ResponseOrderDTO(
+            orderCreated.Id,
+            orderCreated.UserId,
             orderCreated.CreatedAt,
             orderCreated.UpdatedAt,
             orderCreated.Total,

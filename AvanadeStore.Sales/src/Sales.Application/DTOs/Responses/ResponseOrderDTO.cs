@@ -4,6 +4,7 @@ namespace Sales.Application.DTOs.Responses;
 
 public record ResponseOrderDTO(
     Guid Id,
+    Guid UserId,
     DateTime CreatedAt,
     DateTime UpdatedAt,
     decimal Total,

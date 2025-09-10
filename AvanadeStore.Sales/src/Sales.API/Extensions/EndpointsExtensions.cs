@@ -49,14 +49,21 @@ public static class EndpointsExtensions
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization(policy => policy.RequireRole("Client"));
 
-        group.MapPost("/", async (ICreateOrderUseCase useCase, RequestCreateOrderDTO request) =>
+        group.MapPost("/", async (ICreateOrderUseCase useCase, RequestCreateOrderDTO request, HttpContext context) =>
         {
-            var result = await useCase.ExecuteAsync(request);
+            var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var result = await useCase.ExecuteAsync(request, Guid.Parse(userId));
             return Results.Created(string.Empty, result);
         }).WithDescription("**Cria um novo pedido**🔑 (Role: Client)")
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)
+            .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization(policy => policy.RequireRole("Client"));
     }
 }
