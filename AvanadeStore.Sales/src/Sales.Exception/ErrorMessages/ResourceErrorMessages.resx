@@ -144,4 +144,7 @@
   <data name="DB_CONNECTION_FAIL" xml:space="preserve">
     <value>Falha na conexão com o banco de dados</value>
   </data>
+  <data name="ORDER_ITEMS_EMPTY" xml:space="preserve">
+    <value>O pedido deve conter pelo menos um item</value>
+  </data>
 </root>

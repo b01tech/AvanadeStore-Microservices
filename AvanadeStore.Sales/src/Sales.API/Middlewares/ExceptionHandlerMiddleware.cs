@@ -50,9 +50,21 @@ public class ExceptionHandlerMiddleware
             httpContext.Response.StatusCode = status;
             await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
         }
+        else if (exception is OrderNotFoundException)
+        {
+            var status = StatusCodes.Status404NotFound;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }
         else if (exception is NotFoundException)
         {
             var status = StatusCodes.Status404NotFound;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }
+        else if (exception is InvalidArgumentsException)
+        {
+            var status = StatusCodes.Status400BadRequest;
             httpContext.Response.StatusCode = status;
             await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
         }

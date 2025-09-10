@@ -140,5 +140,14 @@ namespace Sales.Exception.ErrorMessages {
                 return ResourceManager.GetString("DB_CONNECTION_FAIL", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O pedido deve conter pelo menos um item.
+        /// </summary>
+        public static string ORDER_ITEMS_EMPTY {
+            get {
+                return ResourceManager.GetString("ORDER_ITEMS_EMPTY", resourceCulture);
+            }
+        }
     }
 }
