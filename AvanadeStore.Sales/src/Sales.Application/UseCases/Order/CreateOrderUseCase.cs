@@ -12,7 +12,7 @@ internal class CreateOrderUseCase : ICreateOrderUseCase
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageBus _bus;
-    private const string STOCK_VALIDATION_QUEUE = "stock-validation-queue";
+
 
     public CreateOrderUseCase(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IMessageBus bus)
     {
@@ -109,6 +109,6 @@ internal class CreateOrderUseCase : ICreateOrderUseCase
             stockValidationItems
         );
 
-        await _bus.PublishAsync(STOCK_VALIDATION_QUEUE, message);
+        await _bus.PublishAsync(QueueNames.STOCK_VALIDATION_QUEUE, message);
     }
 }

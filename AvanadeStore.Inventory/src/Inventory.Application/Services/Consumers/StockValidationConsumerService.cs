@@ -4,7 +4,6 @@ using Inventory.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace Inventory.Application.Services.Consumers;
 
@@ -29,7 +28,7 @@ public class StockValidationConsumerService : BackgroundService
         _logger.LogInformation("Stock Validation Consumer Service started.");
 
         await _messageBus.ConsumeAsync<StockValidationMessage>(
-            "stock-validation-queue",
+            QueueNames.STOCK_VALIDATION_QUEUE,
             ProcessStockValidationMessage,
             stoppingToken);
     }
@@ -50,7 +49,7 @@ public class StockValidationConsumerService : BackgroundService
             foreach (var item in message.Items)
             {
                 var product = await productRepository.GetAsync(item.ProductId);
-                
+
                 if (product == null)
                 {
                     _logger.LogWarning($"Product not found: {item.ProductId}");
@@ -65,7 +64,7 @@ public class StockValidationConsumerService : BackgroundService
                 }
 
                 bool hasStock = product.IsStockAvailable(item.Quantity);
-                
+
                 validatedItems.Add(new OrderValidatedItem(
                     item.ProductId,
                     item.Quantity,
@@ -86,9 +85,9 @@ public class StockValidationConsumerService : BackgroundService
                 allItemsValid
             );
 
-            await messageBus.PublishAsync("order-validated", orderValidatedMessage);
-            
-            _logger.LogInformation("Stock validation completed for Order ID: {OrderId}. Status: {Status}", 
+            await messageBus.PublishAsync(QueueNames.ORDER_VALIDATED_QUEUE, orderValidatedMessage);
+
+            _logger.LogInformation("Stock validation completed for Order ID: {OrderId}. Status: {Status}",
                 message.OrderId, allItemsValid ? "VALID" : "INVALID");
         }
         catch (System.Exception ex)

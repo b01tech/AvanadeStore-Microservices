@@ -29,7 +29,7 @@ public class OrderValidationConsumerService : BackgroundService
         _logger.LogInformation("Order Validation Consumer Service started.");
 
         await _messageBus.ConsumeAsync<OrderValidatedMessage>(
-            "order-validated",
+            QueueNames.ORDER_VALIDATED_QUEUE,
             ProcessOrderValidatedMessage,
             stoppingToken);
     }
