@@ -1,14 +1,15 @@
+using Gateway.API.Extensions;
+
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddApiDocumentation()
+    .AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
 app.UseHttpsRedirection();
+app.MapApiDocumentation();
 
 app.Run();
