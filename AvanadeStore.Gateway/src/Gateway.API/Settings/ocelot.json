@@ -1,0 +1,13 @@
+{
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5261"
+    },
+    "RateLimitOptions": {
+        "ClientIdHeader": "ClientId",
+        "QuotaExceededMessage": "Rate limit exceeded",
+        "RateLimitCounterPrefix": "ocelot",
+        "DisableRateLimitHeaders": false,
+        "HttpStatusCode": 429
+    },
+    "Routes": []
+}
