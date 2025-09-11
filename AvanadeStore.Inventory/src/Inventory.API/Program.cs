@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddUseCases()
     .AddApiDocumentation()
-    .AddJwtAuthentication(builder.Configuration);
+    .AddJwtAuthentication(builder.Configuration)
+    .AddMessageBus(builder.Configuration);
 
 var app = builder.Build();
 app.MapApiDocumentation();
