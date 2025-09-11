@@ -9,10 +9,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["AvanadeStore.Gateway/src/Gateway.API/Gateway.API.csproj", "AvanadeStore.Gateway/src/Gateway.API/"]
-RUN dotnet restore "./AvanadeStore.Gateway/src/Gateway.API/Gateway.API.csproj"
+COPY ["src/Gateway.API/Gateway.API.csproj", "src/Gateway.API/"]
+RUN dotnet restore "./src/Gateway.API/Gateway.API.csproj"
 COPY . .
-WORKDIR "/src/AvanadeStore.Gateway/src/Gateway.API"
+WORKDIR "/src/src/Gateway.API"
 RUN dotnet build "./Gateway.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # PUBLISH

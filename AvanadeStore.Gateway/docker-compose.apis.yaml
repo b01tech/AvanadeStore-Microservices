@@ -1,0 +1,97 @@
+version: "3.8"
+
+services:
+    # Auth API
+    auth-api:
+        build:
+            context: ../AvanadeStore.Auth
+            dockerfile: src/Auth.API/Dockerfile
+        container_name: avanadestore-auth-api
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ASPNETCORE_URLS: "http://+:80"
+            ConnectionStrings__AuthConnection: "${AUTH_CONNECTION_STRING}"
+            Settings__SecretKey: "${SECRET_KEY}"
+            Jwt__Secret: "${JWT_SECRET}"
+            Jwt__Issuer: "AvanadeStore"
+            Jwt__Audience: "${JWT_AUDIENCE}"
+            Jwt__DurationInMinutes: "${JWT_EXPIRE_MINUTES}"
+        ports:
+            - "5140:80"
+        networks:
+            - avanadestore-network
+        restart: unless-stopped
+
+    # Inventory API
+    inventory-api:
+        build:
+            context: ../AvanadeStore.Inventory
+            dockerfile: src/Inventory.API/Dockerfile
+        container_name: avanadestore-inventory-api
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ASPNETCORE_URLS: "http://+:80"
+            ConnectionStrings__InventoryConnection: "${INVENTORY_CONNECTION_STRING}"
+            RabbitMq__Host: "${RABBITMQ_HOST}"
+            RabbitMq__Port: "${RABBITMQ_PORT}"
+            RabbitMq__User: "${RABBITMQ_USER}"
+            RabbitMq__Password: "${RABBITMQ_PASSWORD}"
+            Jwt__Secret: "${JWT_SECRET}"
+            Jwt__Issuer: "AvanadeStore"
+            Jwt__Audience: "${JWT_AUDIENCE}"
+            Jwt__DurationInMinutes: "${JWT_EXPIRE_MINUTES}"
+        ports:
+            - "5009:80"
+        networks:
+            - avanadestore-network
+        restart: unless-stopped
+
+    # Sales API
+    sales-api:
+        build:
+            context: ../AvanadeStore.Sales
+            dockerfile: src/Sales.API/Dockerfile
+        container_name: avanadestore-sales-api
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ASPNETCORE_URLS: "http://+:80"
+            ConnectionStrings__SalesConnection: "${SALES_CONNECTION_STRING}"
+            RabbitMq__Host: "${RABBITMQ_HOST}"
+            RabbitMq__Port: "${RABBITMQ_PORT}"
+            RabbitMq__User: "${RABBITMQ_USER}"
+            RabbitMq__Password: "${RABBITMQ_PASSWORD}"
+            Jwt__Secret: "${JWT_SECRET}"
+            Jwt__Issuer: "AvanadeStore"
+            Jwt__Audience: "${JWT_AUDIENCE}"
+            Jwt__DurationInMinutes: "${JWT_EXPIRE_MINUTES}"
+        ports:
+            - "5018:80"
+        networks:
+            - avanadestore-network
+        restart: unless-stopped
+
+    # Gateway API
+    gateway-api:
+        build:
+            context: .
+            dockerfile: src/Gateway.API/Dockerfile
+        container_name: avanadestore-gateway-api
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ASPNETCORE_URLS: "http://+:80"
+            ConnectionStrings__AuthConnection: "${AUTH_CONNECTION_STRING}"
+            Jwt__Secret: "${JWT_SECRET}"
+            Jwt__Issuer: "AvanadeStore"
+            Jwt__Audience: "${JWT_AUDIENCE}"
+            Jwt__DurationInMinutes: "${JWT_EXPIRE_MINUTES}"
+            Settings__Secret: "${SECRET_KEY}"
+        ports:
+            - "5261:80"
+        networks:
+            - avanadestore-network
+        restart: unless-stopped
+
+# External network
+networks:
+    avanadestore-network:
+        external: true
