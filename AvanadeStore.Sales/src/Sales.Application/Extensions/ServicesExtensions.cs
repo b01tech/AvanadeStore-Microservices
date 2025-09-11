@@ -1,3 +1,4 @@
+using Sales.Application.Services.Consumers;
 using Sales.Application.UseCases.Order;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,12 @@ public static class ServicesExtensions
     {
         services.AddScoped<IGetOrderUseCase, GetOrderUseCase>();
         services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
+        return services;
+    }
+
+    public static IServiceCollection AddConsumerServices(this IServiceCollection services)
+    {
+        services.AddHostedService<OrderValidationConsumerService>();
         return services;
     }
 

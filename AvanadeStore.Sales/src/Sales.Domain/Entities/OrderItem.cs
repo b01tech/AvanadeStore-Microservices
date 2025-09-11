@@ -28,6 +28,13 @@ public class OrderItem
         Quantity = quantity;
     }
 
+    public void UpdatePrice(decimal price)
+    {
+        if (price <= 0)
+            throw new OnValidationException(ResourceErrorMessages.PRICE_INVALID);
+        Price = price;
+    }
+
     public decimal GetSubTotal() => Quantity * Price;
 
     private static void Validate(long productId, int quantity, decimal price)
