@@ -61,11 +61,29 @@ namespace Inventory.Exception.ErrorMessages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falha ao consumir mensagem.
+        /// </summary>
+        public static string CONSUME_MESSAGE_FAIL {
+            get {
+                return ResourceManager.GetString("CONSUME_MESSAGE_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Falha na conexão com banco de dados.
         /// </summary>
         public static string DB_CONNECTION_FAIL {
             get {
                 return ResourceManager.GetString("DB_CONNECTION_FAIL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Falha na inicialização do Message Bus.
+        /// </summary>
+        public static string MESSAGEBUS_INITIALIZATION {
+            get {
+                return ResourceManager.GetString("MESSAGEBUS_INITIALIZATION", resourceCulture);
             }
         }
         
