@@ -65,7 +65,7 @@ public class Order
         }
         else
         {
-            var orderItem = new OrderItem(productId, quantity, 0m);
+            var orderItem = new OrderItem(productId, quantity, 1m);
             orderItem.SetOrderId(Id);
             _orderItems.Add(orderItem);
         }
