@@ -1,3 +1,4 @@
+using Inventory.Application.Services.Consumers;
 using Inventory.Application.Services.MessageBus;
 using Inventory.Application.UseCases.Product;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,12 @@ public static class ServicesExtensions
     {
         services.AddScoped<IGetProductUseCase, GetProductUseCase>();
         services.AddScoped<ICreateProductUseCase, CreateProductUseCase>();
+        return services;
+    }
+
+    public static IServiceCollection AddConsumerServices(this IServiceCollection services)
+    {
+        services.AddHostedService<StockValidationConsumerService>();
         return services;
     }
     public static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)

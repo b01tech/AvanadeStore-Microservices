@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration)
     .AddUseCases()
+    .AddConsumerServices()
     .AddApiDocumentation()
     .AddJwtAuthentication(builder.Configuration)
     .AddMessageBus(builder.Configuration);
