@@ -55,12 +55,14 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         if (_consumeChannel == null)
             throw new MessageFailException(ResourceErrorMessages.MESSAGEBUS_INITIALIZATION);
 
-        await _consumeChannel.QueueDeclareAsync(queue, true, false, false, null);
+        await SetupQueueWithDlq(queue);
 
         var consumer = new AsyncEventingBasicConsumer(_consumeChannel);
 
         consumer.ReceivedAsync += async (sender, ea) =>
         {
+            var retryCount = GetRetryCount((IBasicProperties)ea.BasicProperties);
+            
             try
             {
                 var body = ea.Body.ToArray();
@@ -74,8 +76,18 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
             }
             catch (System.Exception ex)
             {
-                await _consumeChannel.BasicNackAsync(ea.DeliveryTag, false, requeue: false);
                 Console.Error.WriteLine($"{ResourceErrorMessages.CONSUME_MESSAGE_FAIL}|{queue}: {ex}");
+                
+                if (retryCount < _settings.MaxRetryAttempts)
+                {
+                    await RetryMessage(ea, retryCount + 1, queue);
+                }
+                else
+                {
+                    await SendToDlq(ea, queue, ex.Message);
+                }
+                
+                await _consumeChannel.BasicNackAsync(ea.DeliveryTag, false, requeue: false);
             }
         };
 
@@ -86,6 +98,96 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
             if (_consumeChannel != null) await _consumeChannel.CloseAsync();
         });
     }
+    private async Task SetupQueueWithDlq(string queueName)
+    {
+        var dlqName = $"{queueName}.dlq";
+        // DLQ
+        await _consumeChannel.QueueDeclareAsync(dlqName, true, false, false, null);
+        
+        // QUEUE
+        var arguments = new Dictionary<string, object>
+        {
+            { "x-dead-letter-exchange", "" },
+            { "x-dead-letter-routing-key", dlqName }
+        };
+        
+        await _consumeChannel.QueueDeclareAsync(queueName, true, false, false, arguments);
+    }
+
+    private int GetRetryCount(IBasicProperties properties)
+    {
+        if (properties?.Headers != null && properties.Headers.TryGetValue("x-retry-count", out var retryCountObj))
+        {
+            if (retryCountObj is byte[] retryCountBytes)
+            {
+                return BitConverter.ToInt32(retryCountBytes, 0);
+            }
+        }
+        return 0;
+    }
+
+    private async Task RetryMessage(BasicDeliverEventArgs ea, int retryCount, string originalQueue)
+    {
+        try
+        {
+            await Task.Delay(_settings.RetryDelayMs);
+            
+            var props = new BasicProperties
+            {
+                Persistent = true,
+                Headers = new Dictionary<string, object>
+                {
+                    { "x-retry-count", retryCount },
+                    { "x-original-queue", originalQueue },
+                    { "x-retry-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds() }
+                }
+            };            
+
+            await _publishChannel.BasicPublishAsync(
+                exchange: "",
+                routingKey: originalQueue,
+                mandatory: false,
+                basicProperties: props,
+                body: ea.Body);
+        }
+        catch (System.Exception ex)
+        {
+            Console.Error.WriteLine($"Erro ao tentar retry da mensagem: {ex.Message}");
+        }
+    }
+
+    private async Task SendToDlq(BasicDeliverEventArgs ea, string queue, string errorMessage)
+    {
+        var dlqName = $"{queue}.dlq";
+        try
+        {
+            var props = new BasicProperties
+            {
+                Persistent = true,
+                Headers = new Dictionary<string, object>
+                {
+                    { "x-death-reason", "max-retries-exceeded" },
+                    { "x-error-message", errorMessage },
+                    { "x-death-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds() },
+                    { "x-original-queue", ea.RoutingKey }
+                }
+            };
+            
+            await _publishChannel.BasicPublishAsync(
+                exchange: "",
+                routingKey: dlqName,
+                mandatory: false,
+                basicProperties: props,
+                body: ea.Body);
+                
+            Console.WriteLine($"Mensagem enviada para DLQ: {dlqName}");
+        }
+        catch (System.Exception ex)
+        {
+            Console.Error.WriteLine($"Erro ao enviar mensagem para DLQ: {ex.Message}");
+        }
+    }
+
     private ConnectionFactory CreateConnectionFactory(RabbitMqSettings settings)
     {
         var factory = new ConnectionFactory
