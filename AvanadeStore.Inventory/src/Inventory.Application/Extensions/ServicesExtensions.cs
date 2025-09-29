@@ -3,9 +3,9 @@ using Inventory.Application.Services.MessageBus;
 using Inventory.Application.UseCases.Product;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sales.Application.Services.MessageBus;
 
 namespace Inventory.Application.Extensions;
+
 public static class ServicesExtensions
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services)
@@ -20,7 +20,11 @@ public static class ServicesExtensions
         services.AddHostedService<StockValidationConsumerService>();
         return services;
     }
-    public static IServiceCollection AddMessageBus(this IServiceCollection services, IConfiguration configuration)
+
+    public static IServiceCollection AddMessageBus(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         var settings = new RabbitMqSettings
         {
@@ -28,7 +32,12 @@ public static class ServicesExtensions
             Port = int.TryParse(configuration["RabbitMq:Port"], out var port) ? port : 5672,
             User = configuration["RabbitMq:User"] ?? string.Empty,
             Password = configuration["RabbitMq:Password"] ?? string.Empty,
-            PrefetchCount = ushort.TryParse(configuration["RabbitMq:PrefetchCount"] ?? string.Empty, out var prefetch) ? prefetch : (ushort)10
+            PrefetchCount = ushort.TryParse(
+                configuration["RabbitMq:PrefetchCount"] ?? string.Empty,
+                out var prefetch
+            )
+                ? prefetch
+                : (ushort)10
         };
         services.AddSingleton<IMessageBus>(sp =>
         {
