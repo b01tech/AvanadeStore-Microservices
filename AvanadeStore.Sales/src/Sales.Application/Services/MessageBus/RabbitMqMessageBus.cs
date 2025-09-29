@@ -69,7 +69,7 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 
         consumer.ReceivedAsync += async (sender, ea) =>
         {
-            var retryCount = GetRetryCount((IBasicProperties)ea.BasicProperties);
+            var retryCount = GetRetryCount(ea.BasicProperties);
 
             try
             {
@@ -127,7 +127,7 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         await _consumeChannel.QueueDeclareAsync(queueName, true, false, false, arguments);
     }
 
-    private int GetRetryCount(IBasicProperties properties)
+    private int GetRetryCount(IReadOnlyBasicProperties? properties)
     {
         if (
             properties?.Headers != null

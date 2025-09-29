@@ -1,10 +1,10 @@
-using System.Text;
-using System.Text.Json;
 using Inventory.Application.Services.MessageBus;
 using Inventory.Exception.CustomExceptions;
 using Inventory.Exception.ErrorMessages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
+using System.Text.Json;
 
 namespace Sales.Application.Services.MessageBus;
 
@@ -70,7 +70,7 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 
         consumer.ReceivedAsync += async (sender, ea) =>
         {
-            var retryCount = GetRetryCount((IBasicProperties)ea.BasicProperties);
+            var retryCount = GetRetryCount(ea.BasicProperties);
 
             try
             {
@@ -127,12 +127,10 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         await _consumeChannel.QueueDeclareAsync(queueName, true, false, false, arguments);
     }
 
-    private int GetRetryCount(IBasicProperties properties)
+    private int GetRetryCount(IReadOnlyBasicProperties? properties)
     {
-        if (
-            properties?.Headers != null
-            && properties.Headers.TryGetValue("x-retry-count", out var retryCountObj)
-        )
+        if (properties?.Headers != null &&
+            properties.Headers.TryGetValue("x-retry-count", out var retryCountObj))
         {
             if (retryCountObj is byte[] retryCountBytes)
             {
