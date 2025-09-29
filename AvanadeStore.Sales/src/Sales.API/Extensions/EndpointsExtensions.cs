@@ -1,6 +1,7 @@
 using Sales.Application.DTOs.Requests;
 using Sales.Application.DTOs.Responses;
 using Sales.Application.UseCases.Order;
+using Sales.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Sales.API.Extensions;
@@ -33,6 +34,14 @@ public static class EndpointsExtensions
         .Produces<ResponseOrderDTO>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .RequireAuthorization(policy => policy.RequireRole("Employee", "Manager"));
+
+        group.MapGet("/status/{status}/{page:int}", async (OrderStatus status, IGetOrderUseCase useCase, int page = 1) =>
+        {
+            var result = await useCase.ExecuteGetByStatusAsync(status, page);
+            return Results.Ok(result);
+        }).WithDescription("**Obtém pedidos filtrados por status**🔑 (Role: Employee, Manager)")
+            .Produces<ResponseOrdersListDTO>(StatusCodes.Status200OK)
+            .RequireAuthorization(policy => policy.RequireRole("Employee", "Manager"));
 
         group.MapGet("/my/{page:int}", async (IGetOrderUseCase useCase, HttpContext context, int page = 1) =>
         {

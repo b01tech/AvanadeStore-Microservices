@@ -1,5 +1,6 @@
 using Sales.Domain.Entities;
 using Sales.Domain.Interfaces;
+using Sales.Domain.Enums;
 using Sales.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,14 @@ internal class OrderRepository : IOrderRepository
         return await _context.Orders
             .Include(o => o.OrderItems)
             .Where(o => o.UserId == userId)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .Where(o => o.Status == status)
             .ToListAsync();
     }
 
