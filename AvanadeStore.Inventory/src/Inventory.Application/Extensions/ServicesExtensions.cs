@@ -18,6 +18,7 @@ public static class ServicesExtensions
     public static IServiceCollection AddConsumerServices(this IServiceCollection services)
     {
         services.AddHostedService<StockValidationConsumerService>();
+        services.AddHostedService<OrderFinishedConsumerService>();
         return services;
     }
 

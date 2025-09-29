@@ -101,5 +101,15 @@ public static class EndpointsExtensions
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization(policy => policy.RequireRole("Client"));
+
+        group.MapPut("/{id:guid}/finish", async (Guid id, IUpdateOrderStatusUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteFinishOrderAsync(id);
+            return Results.Ok(result);
+        }).WithDescription("**Finaliza o pedido (InSeparation → Finished)**🔑 (Role: Employee)")
+            .Produces<ResponseOrderDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .RequireAuthorization(policy => policy.RequireRole("Employee"));
     }
 }

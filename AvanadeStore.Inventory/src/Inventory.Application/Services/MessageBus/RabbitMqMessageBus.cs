@@ -6,7 +6,7 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace Sales.Application.Services.MessageBus;
+namespace Inventory.Application.Services.MessageBus;
 
 internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 {
