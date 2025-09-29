@@ -11,6 +11,7 @@ public static class ServicesExtensions
     {
         services.AddScoped<IGetOrderUseCase, GetOrderUseCase>();
         services.AddScoped<ICreateOrderUseCase, CreateOrderUseCase>();
+        services.AddScoped<IUpdateOrderStatusUseCase, UpdateOrderStatusUseCase>();
         return services;
     }
 

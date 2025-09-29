@@ -74,5 +74,15 @@ public static class EndpointsExtensions
             .Produces(StatusCodes.Status409Conflict)
             .Produces(StatusCodes.Status401Unauthorized)
             .RequireAuthorization(policy => policy.RequireRole("Client"));
+
+        group.MapPut("/{id:guid}/confirm-separation", async (Guid id, IUpdateOrderStatusUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteConfirmSeparationAsync(id);
+            return Results.Ok(result);
+        }).WithDescription("**Confirma separação do pedido (Confirmed → InSeparation)**🔑 (Role: Employee)")
+            .Produces<ResponseOrderDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .RequireAuthorization(policy => policy.RequireRole("Employee"));
     }
 }
