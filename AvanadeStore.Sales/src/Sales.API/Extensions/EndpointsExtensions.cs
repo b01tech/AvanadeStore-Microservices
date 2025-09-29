@@ -84,5 +84,22 @@ public static class EndpointsExtensions
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .RequireAuthorization(policy => policy.RequireRole("Employee"));
+
+        group.MapPut("/{id:guid}/cancel", async (Guid id, IUpdateOrderStatusUseCase useCase, HttpContext context) =>
+        {
+            var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var result = await useCase.ExecuteCancelOrderAsync(id, Guid.Parse(userId));
+            return Results.Ok(result);
+        }).WithDescription("**Cancela o pedido (Confirmed/InSeparation → Cancelled)**🔑 (Role: Client)")
+            .Produces<ResponseOrderDTO>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .RequireAuthorization(policy => policy.RequireRole("Client"));
     }
 }
