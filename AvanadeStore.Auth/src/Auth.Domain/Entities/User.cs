@@ -7,7 +7,7 @@ public abstract class User
 {
     public Guid Id { get; init; }
     public DateTime CreatedAt { get; init; }
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime UpdatedAt { get; protected set; }
     public bool IsActive { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
@@ -36,6 +36,30 @@ public abstract class User
         PasswordHash = passwordHash;
         UpdatedAt = DateTime.UtcNow;
     }
+
+    public void UpdateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new OnValidationException(ResourceErrorMessages.NAME_EMPTY);
+        Name = name;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            throw new OnValidationException(ResourceErrorMessages.EMAIL_EMPTY);
+        Email = email;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateRole(UserRole role)
+    {
+        ValidateRole(role);
+        Role = role;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void Deactivate()
     {
         IsActive = false;

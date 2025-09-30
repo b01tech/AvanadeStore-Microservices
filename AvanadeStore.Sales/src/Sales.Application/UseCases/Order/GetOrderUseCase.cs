@@ -1,5 +1,6 @@
 using Sales.Application.DTOs.Responses;
 using Sales.Domain.Interfaces;
+using Sales.Domain.Enums;
 using Sales.Exception.CustomExceptions;
 using Sales.Exception.ErrorMessages;
 
@@ -88,6 +89,35 @@ internal class GetOrderUseCase : IGetOrderUseCase
                      oi.Price
                  )).ToList()
              ))
+            .ToList();
+            
+        return new ResponseOrdersListDTO(ordersList, page, totalItems, totalPages);
+    }
+
+    public async Task<ResponseOrdersListDTO> ExecuteGetByStatusAsync(OrderStatus status, int page = 1)
+    {
+        const int pageSize = 10;
+        var orders = await _orderRepository.GetByStatusAsync(status);
+        var totalItems = orders.Count();
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+        
+        var ordersList = orders
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(o => new ResponseOrderDTO(
+                o.Id,
+                o.UserId,
+                o.CreatedAt,
+                o.UpdatedAt,
+                o.Total,
+                o.Status,
+                o.OrderItems.Select(oi => new ResponseOrderItemDTO(
+                    oi.Id,
+                    oi.ProductId,
+                    oi.Quantity,
+                    oi.Price
+                )).ToList()
+            ))
             .ToList();
             
         return new ResponseOrdersListDTO(ordersList, page, totalItems, totalPages);

@@ -6,5 +6,5 @@ public interface IEmployeeRepository
     Task<bool> ExistsByEmailAsync(string email);
     Task<Entities.Employee?> AddAsync(Entities.Employee employee);
     Task<bool> UpdateAsync(Entities.Employee employee);
-    Task<bool> DeleteAsync(Guid id);
+    Task<bool> SoftDeleteAsync(Guid id);
 }

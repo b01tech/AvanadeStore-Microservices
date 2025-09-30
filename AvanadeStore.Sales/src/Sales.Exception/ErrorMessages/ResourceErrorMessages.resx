@@ -156,4 +156,7 @@
   <data name="MESSAGEBUS_INITIALIZATION" xml:space="preserve">
     <value>Falha ao iniciar serviço Message Bus</value>
   </data>
+  <data name="INVALID_ORDER_STATUS_OPERATION" xml:space="preserve">
+    <value>Operação inválida para o status atual do pedido</value>
+  </data>
 </root>

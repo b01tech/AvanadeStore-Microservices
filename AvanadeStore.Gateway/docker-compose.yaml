@@ -1,0 +1,45 @@
+services:
+    # SQL Server
+    sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        container_name: avanadestore-sqlserver
+        environment:
+            ACCEPT_EULA: Y
+            SA_PASSWORD: "AvanadeStore@2024"
+            MSSQL_PID: Express
+        ports:
+            - "1433:1433"
+        volumes:
+            - sqlserver_data:/var/opt/mssql
+        networks:
+            - avanadestore-net
+        restart: unless-stopped
+
+    # RabbitMQ
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: avanadestore-rabbitmq
+        environment:
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin123
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
+        networks:
+            - avanadestore-net
+        restart: unless-stopped
+
+# Volumes
+volumes:
+    sqlserver_data:
+        driver: local
+    rabbitmq_data:
+        driver: local
+
+# Network
+networks:
+    avanadestore-net:
+        driver: bridge
+        name: avanadestore-network

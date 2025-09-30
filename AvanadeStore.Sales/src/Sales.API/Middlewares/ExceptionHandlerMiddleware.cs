@@ -68,6 +68,12 @@ public class ExceptionHandlerMiddleware
             httpContext.Response.StatusCode = status;
             await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
         }
+        else if (exception is InvalidOrderStatusException)
+        {
+            var status = StatusCodes.Status400BadRequest;
+            httpContext.Response.StatusCode = status;
+            await httpContext.Response.WriteAsJsonAsync(new ResponseErrorMessage(status, exception.ErrorMessages.ToList()));
+        }
         else
         {
             var status = StatusCodes.Status500InternalServerError;

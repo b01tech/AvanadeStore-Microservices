@@ -34,7 +34,8 @@ internal class EmployeeRepository : IEmployeeRepository
         _context.Employees.Update(employee);
         return await Task.FromResult(true);
     }
-    public async Task<bool> DeleteAsync(Guid id)
+
+    public async Task<bool> SoftDeleteAsync(Guid id)
     {
         var employee = await _context.Employees.FindAsync(id);
         if (employee is null)

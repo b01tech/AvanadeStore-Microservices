@@ -3,6 +3,7 @@ using Auth.Application.DTOs.Responses;
 using Auth.Application.UseCases.Client;
 using Auth.Application.UseCases.Employee;
 using Auth.Application.UseCases.Login;
+using System.Security.Claims;
 
 namespace Auth.API.Extensions;
 
@@ -27,6 +28,24 @@ public static class EndpointsExtension
         }).WithDescription("**Faz cadastro de clientes**")
         .Produces<ResponseCreateUserDTO>(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
+
+        group.MapPut("/{id:guid}", async (Guid id, RequestUpdateClientDTO request, IUpdateClientUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(id, request);
+            return result ? Results.Ok() : Results.BadRequest();
+        }).WithDescription("**Atualiza dados do cliente**")
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
+
+        group.MapDelete("/{id:guid}", async (Guid id, ISoftDeleteClientUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(id);
+            return result ? Results.NoContent() : Results.BadRequest();
+        }).WithDescription("**Soft delete do cliente**")
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
     }
 
     private static void MapEmployeeEndpoints(WebApplication app)
@@ -45,6 +64,32 @@ public static class EndpointsExtension
             - 2: Manager
             """)
         .Produces(StatusCodes.Status201Created).Produces(StatusCodes.Status400BadRequest);
+
+        group.MapPut("/{id:guid}", async (Guid id, RequestUpdateEmployeeDTO request, IUpdateEmployeeUseCase useCase) =>
+        {
+            var result = await useCase.ExecuteAsync(id, request);
+            return result ? Results.Ok() : Results.BadRequest();
+        }).WithDescription("**Atualiza dados do funcionário**")
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status404NotFound);
+
+        group.MapDelete("/{id:guid}", async (Guid id, ISoftDeleteEmployeeUseCase useCase, ClaimsPrincipal user) =>
+        {
+            // Obter o ID do usuário autenticado
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var requestingUserId))
+                return Results.Unauthorized();
+
+            var result = await useCase.ExecuteAsync(id, requestingUserId);
+            return result ? Results.NoContent() : Results.BadRequest();
+        }).WithDescription("**Soft delete do funcionário (somente Manager)**")
+        .RequireAuthorization()
+        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status403Forbidden)
+        .Produces(StatusCodes.Status404NotFound);
     }
     private static void MapLoginEndpoints(WebApplication app)
     {

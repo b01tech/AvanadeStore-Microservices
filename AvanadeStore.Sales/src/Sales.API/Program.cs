@@ -12,7 +12,8 @@ builder.Services.AddInfrastructure(builder.Configuration)
     .AddConsumerServices()
     .AddApiDocumentation()
     .AddJwtAuthentication(builder.Configuration)
-    .AddMessageBus(builder.Configuration);
+    .AddMessageBus(builder.Configuration)
+    .AddJsonConfiguration();
 
 var app = builder.Build();
 app.MapApiDocumentation();

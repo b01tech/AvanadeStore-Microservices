@@ -1,0 +1,158 @@
+{
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5100"
+    },
+    "RateLimitOptions": {
+        "ClientIdHeader": "ClientId",
+        "QuotaExceededMessage": "Rate limit exceeded",
+        "RateLimitCounterPrefix": "ocelot",
+        "DisableRateLimitHeaders": false,
+        "HttpStatusCode": 429
+    },
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/client",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-auth-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/auth/client",
+            "UpstreamHttpMethod": ["POST"]
+        },
+        {
+            "DownstreamPathTemplate": "/employee",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-auth-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/auth/employee",
+            "UpstreamHttpMethod": ["POST"]
+        },
+        {
+            "DownstreamPathTemplate": "/login/email",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-auth-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/auth/login/email",
+            "UpstreamHttpMethod": ["POST"]
+        },
+        {
+            "DownstreamPathTemplate": "/login/cpf",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-auth-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/auth/login/cpf",
+            "UpstreamHttpMethod": ["POST"]
+        },
+        {
+            "DownstreamPathTemplate": "/product",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-inventory-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/inventory/product",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/product/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-inventory-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/inventory/product/",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/product/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-inventory-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/inventory/product/{everything}",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/order",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-sales-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/sales/order",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/order/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-sales-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/sales/order/",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        },
+        {
+            "DownstreamPathTemplate": "/order/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avanadestore-sales-api",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/sales/order/{everything}",
+            "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            }
+        }
+    ]
+}

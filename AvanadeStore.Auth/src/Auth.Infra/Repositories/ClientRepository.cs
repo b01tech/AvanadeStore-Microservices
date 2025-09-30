@@ -47,7 +47,8 @@ internal class ClientRepository : IClientRepository
         _context.Clients.Update(client);
         return Task.FromResult(true);
     }
-    public async Task<bool> DeleteAsync(Guid id)
+
+    public async Task<bool> SoftDeleteAsync(Guid id)
     {
         var client = await _context.Clients.FindAsync(id);
         if (client is null) return false;

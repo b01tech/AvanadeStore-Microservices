@@ -9,15 +9,14 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["AvanadeStore.Inventory/src/Inventory.API/Inventory.API.csproj", "AvanadeStore.Inventory/src/Inventory.API/"]
-COPY ["AvanadeStore.Inventory/src/Inventory.Application/Inventory.Application.csproj", "AvanadeStore.Inventory/src/Inventory.Application/"]
-COPY ["AvanadeStore.Inventory/src/Inventory.Domain/Inventory.Domain.csproj", "AvanadeStore.Inventory/src/Inventory.Domain/"]
-COPY ["AvanadeStore.Auth/src/Auth.Exception/Auth.Exception.csproj", "AvanadeStore.Auth/src/Auth.Exception/"]
-COPY ["AvanadeStore.Inventory/src/Inventory.Exception/Inventory.Exception.csproj", "AvanadeStore.Inventory/src/Inventory.Exception/"]
-COPY ["AvanadeStore.Inventory/src/Inventory.Infra/Inventory.Infra.csproj", "AvanadeStore.Inventory/src/Inventory.Infra/"]
-RUN dotnet restore "./AvanadeStore.Inventory/src/Inventory.API/Inventory.API.csproj"
+COPY ["src/Inventory.API/Inventory.API.csproj", "src/Inventory.API/"]
+COPY ["src/Inventory.Application/Inventory.Application.csproj", "src/Inventory.Application/"]
+COPY ["src/Inventory.Domain/Inventory.Domain.csproj", "src/Inventory.Domain/"]
+COPY ["src/Inventory.Exception/Inventory.Exception.csproj", "src/Inventory.Exception/"]
+COPY ["src/Inventory.Infra/Inventory.Infra.csproj", "src/Inventory.Infra/"]
+RUN dotnet restore "./src/Inventory.API/Inventory.API.csproj"
 COPY . .
-WORKDIR "/src/AvanadeStore.Inventory/src/Inventory.API"
+WORKDIR "/src/src/Inventory.API"
 RUN dotnet build "./Inventory.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # PUBLISH
