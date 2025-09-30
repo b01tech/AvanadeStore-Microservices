@@ -4,6 +4,7 @@ using Sales.Application.Services.MessageBus;
 using Sales.Domain.Entities;
 using Sales.Domain.Enums;
 using Sales.Domain.Interfaces;
+using Sales.Exception.CustomExceptions;
 
 namespace Sales.Application.UseCases.Order;
 public class UpdateOrderStatusUseCase : IUpdateOrderStatusUseCase
@@ -26,7 +27,7 @@ public class UpdateOrderStatusUseCase : IUpdateOrderStatusUseCase
             throw new ArgumentException("Order not found");
 
         if (order.Status != OrderStatus.Confirmed)
-            throw new InvalidOperationException("Order must be in Confirmed status to start separation");
+            throw new InvalidOrderStatusException("Pedido deve estar no status Confirmado para iniciar separação");
 
         order.StartSeparation();
         await _orderRepository.UpdateAsync(order);
@@ -58,7 +59,7 @@ public class UpdateOrderStatusUseCase : IUpdateOrderStatusUseCase
             throw new UnauthorizedAccessException("User can only cancel their own orders");
 
         if (order.Status != OrderStatus.Confirmed && order.Status != OrderStatus.InSeparation)
-            throw new InvalidOperationException("Order must be in Confirmed or InSeparation status to be cancelled");
+            throw new InvalidOrderStatusException("Pedido só pode ser cancelado se estiver Confirmado ou Em Separação");
 
         order.CancelOrder();
         await _orderRepository.UpdateAsync(order);
@@ -87,7 +88,7 @@ public class UpdateOrderStatusUseCase : IUpdateOrderStatusUseCase
             throw new ArgumentException("Order not found");
 
         if (order.Status != OrderStatus.InSeparation)
-            throw new InvalidOperationException("Order must be in InSeparation status to be finished");
+            throw new InvalidOrderStatusException("Pedido deve estar Em Separação para ser finalizado");
 
         order.FinishOrder();
         await _orderRepository.UpdateAsync(order);
