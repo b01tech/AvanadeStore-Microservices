@@ -1,0 +1,35 @@
+name: CI - AvanadeStore
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore AvanadeStore.sln
+      
+    - name: Build solution
+      run: dotnet build AvanadeStore.sln --no-restore --configuration Release
+      
+    - name: Test Auth
+      run: dotnet test AvanadeStore.Auth/test/Auth.Tests/Auth.Tests.csproj --no-build --configuration Release --verbosity normal
+      
+    - name: Test Inventory
+      run: dotnet test AvanadeStore.Inventory/test/Inventory.Tests/Inventory.Tests.csproj --no-build --configuration Release --verbosity normal
+      
+    - name: Test Sales
+      run: dotnet test AvanadeStore.Sales/test/Sales.Tests/Sales.Tests.csproj --no-build --configuration Release --verbosity normal
