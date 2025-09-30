@@ -29,12 +29,12 @@ public static class ServicesExtensions
     {
         var settings = new RabbitMqSettings
         {
-            Host = configuration["RabbitMq:Host"] ?? string.Empty,
-            Port = int.TryParse(configuration["RabbitMq:Port"], out var port) ? port : 5672,
-            User = configuration["RabbitMq:User"] ?? string.Empty,
-            Password = configuration["RabbitMq:Password"] ?? string.Empty,
+            Host = configuration["RabbitMQ:Host"] ?? string.Empty,
+            Port = int.TryParse(configuration["RabbitMQ:Port"], out var port) ? port : 5672,
+            User = configuration["RabbitMQ:User"] ?? string.Empty,
+            Password = configuration["RabbitMQ:Password"] ?? string.Empty,
             PrefetchCount = ushort.TryParse(
-                configuration["RabbitMq:PrefetchCount"] ?? string.Empty,
+                configuration["RabbitMQ:PrefetchCount"] ?? string.Empty,
                 out var prefetch
             )
                 ? prefetch
