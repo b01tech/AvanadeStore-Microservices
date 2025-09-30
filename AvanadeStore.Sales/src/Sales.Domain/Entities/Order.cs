@@ -99,6 +99,18 @@ public class Order
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void UpdateOrderItemPrice(long productId, decimal price)
+    {
+        ValidateCanModifyItems();
+
+        var item = _orderItems.FirstOrDefault(x => x.ProductId == productId)
+            ?? throw new NotFoundException(ResourceErrorMessages.ORDER_ITEM_NOT_FOUND);
+
+        item.UpdatePrice(price);
+        CalculateTotal();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void ConfirmOrder()
     {
         ValidateStatusTransition(OrderStatus.Confirmed);
@@ -142,7 +154,7 @@ public class Order
     private void ValidateCanModifyItems()
     {
         if (Status != OrderStatus.Created)
-            throw new OnValidationException(ResourceErrorMessages.ORDER_CANNOT_MODIFY_ITEMS);
+            throw new InvalidOrderStatusException(ResourceErrorMessages.ORDER_CANNOT_MODIFY_ITEMS);
     }
 
     private void ValidateStatusTransition(OrderStatus newStatus)
