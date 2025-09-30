@@ -12,7 +12,11 @@ public static class ServicesExtensions
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<ICreateClientUseCase, CreateClientUseCase>();
+        services.AddScoped<IUpdateClientUseCase, UpdateClientUseCase>();
+        services.AddScoped<ISoftDeleteClientUseCase, SoftDeleteClientUseCase>();
         services.AddScoped<ICreateEmployeeUseCase, CreateEmployeeUseCase>();
+        services.AddScoped<IUpdateEmployeeUseCase, UpdateEmployeeUseCase>();
+        services.AddScoped<ISoftDeleteEmployeeUseCase, SoftDeleteEmployeeUseCase>();
         services.AddScoped<ILoginUseCase, LoginUseCase>();
 
         return services;

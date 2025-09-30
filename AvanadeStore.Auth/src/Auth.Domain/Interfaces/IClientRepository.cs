@@ -8,5 +8,5 @@ public interface IClientRepository
     Task<bool> ExistsByEmailAsync(string email);
     Task<Entities.Client?> AddAsync(Entities.Client client);
     Task<bool> UpdateAsync(Entities.Client client);
-    Task<bool> DeleteAsync(Guid id);
+    Task<bool> SoftDeleteAsync(Guid id);
 }
