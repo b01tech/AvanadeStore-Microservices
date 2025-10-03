@@ -1,3 +1,4 @@
+using Prometheus;
 using Sales.API.Extensions;
 using Sales.API.Middlewares;
 using Sales.Application.Extensions;
@@ -13,9 +14,11 @@ builder.Services.AddInfrastructure(builder.Configuration)
     .AddApiDocumentation()
     .AddJwtAuthentication(builder.Configuration)
     .AddMessageBus(builder.Configuration)
-    .AddJsonConfiguration();
+    .AddMetrics();
 
 var app = builder.Build();
+app.UseMetricServer("/metrics");
+app.UseHttpMetrics();
 app.MapApiDocumentation();
 app.UseExceptionHandlerMiddleware();
 app.UseHttpsRedirection();

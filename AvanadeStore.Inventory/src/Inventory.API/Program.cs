@@ -2,6 +2,7 @@ using Inventory.API.Extensions;
 using Inventory.API.Middlewares;
 using Inventory.Application.Extensions;
 using Inventory.Infra.Extensions;
+using Prometheus;
 
 DotNetEnv.Env.Load();
 
@@ -12,9 +13,12 @@ builder.Services.AddInfrastructure(builder.Configuration)
     .AddConsumerServices()
     .AddApiDocumentation()
     .AddJwtAuthentication(builder.Configuration)
-    .AddMessageBus(builder.Configuration);
+    .AddMessageBus(builder.Configuration)
+    .AddMetrics();
 
 var app = builder.Build();
+app.UseMetricServer("/metrics");
+app.UseHttpMetrics();
 app.MapApiDocumentation();
 app.UseExceptionHandlerMiddleware();
 app.UseHttpsRedirection();
