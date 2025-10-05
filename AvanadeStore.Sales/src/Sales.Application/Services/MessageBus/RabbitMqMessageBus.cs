@@ -1,18 +1,19 @@
+using System.Text;
+using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sales.Exception.CustomExceptions;
 using Sales.Exception.ErrorMessages;
-using System.Text;
-using System.Text.Json;
 
 namespace Sales.Application.Services.MessageBus;
+
 internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 {
     private readonly RabbitMqSettings _settings;
-    private  IConnectionFactory _factory;
-    private  IConnection _connection;
-    private  IChannel _publishChannel;
-    private  IChannel _consumeChannel;
+    private IConnectionFactory _factory;
+    private IConnection _connection;
+    private IChannel _publishChannel;
+    private IChannel _consumeChannel;
 
     public RabbitMqMessageBus(RabbitMqSettings settings)
     {
@@ -30,12 +31,22 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         await Task.CompletedTask;
     }
 
-    public async Task PublishAsync<T>(string queue, T message) where T : class
+    public async Task PublishAsync<T>(string queue, T message)
+        where T : class
     {
         if (_publishChannel == null)
             throw new MessageFailException(ResourceErrorMessages.MESSAGEBUS_INITIALIZATION);
 
-        await _publishChannel.QueueDeclareAsync(queue, true, false, false, null);
+        var dlqName = $"{queue}.dlq";
+        await _publishChannel.QueueDeclareAsync(dlqName, true, false, false, null);
+
+        var arguments = new Dictionary<string, object>
+        {
+            { "x-dead-letter-exchange", "" },
+            { "x-dead-letter-routing-key", dlqName }
+        };
+
+        await _publishChannel.QueueDeclareAsync(queue, true, false, false, arguments);
 
         var jsonMessage = JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(jsonMessage);
@@ -47,9 +58,16 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
             routingKey: queue,
             mandatory: false,
             basicProperties: props,
-            body: body);
+            body: body
+        );
     }
-    public async Task ConsumeAsync<T>(string queue, Func<T, Task> onMessage, CancellationToken cancellationToken = default) where T : class
+
+    public async Task ConsumeAsync<T>(
+        string queue,
+        Func<T, Task> onMessage,
+        CancellationToken cancellationToken = default
+    )
+        where T : class
     {
         if (_consumeChannel == null)
             throw new MessageFailException(ResourceErrorMessages.MESSAGEBUS_INITIALIZATION);
@@ -61,7 +79,7 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         consumer.ReceivedAsync += async (sender, ea) =>
         {
             var retryCount = GetRetryCount((IBasicProperties)ea.BasicProperties);
-            
+
             try
             {
                 var body = ea.Body.ToArray();
@@ -75,17 +93,19 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
             }
             catch (System.Exception ex)
             {
-                Console.Error.WriteLine($"{ResourceErrorMessages.CONSUME_MESSAGE_FAIL}|{queue}: {ex}");
-                
+                Console.Error.WriteLine(
+                    $"{ResourceErrorMessages.CONSUME_MESSAGE_FAIL}|{queue}: {ex}"
+                );
+
                 if (retryCount < _settings.MaxRetryAttempts)
                 {
                     await RetryMessage(ea, retryCount + 1, queue);
                 }
                 else
-                {                    
+                {
                     await SendToDlq(ea, queue, ex.Message);
                 }
-                
+
                 await _consumeChannel.BasicNackAsync(ea.DeliveryTag, false, requeue: false);
             }
         };
@@ -94,29 +114,34 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 
         cancellationToken.Register(async () =>
         {
-            if (_consumeChannel != null) await _consumeChannel.CloseAsync();
+            if (_consumeChannel != null)
+                await _consumeChannel.CloseAsync();
         });
     }
+
     private async Task SetupQueueWithDlq(string queueName)
     {
         var dlqName = $"{queueName}.dlq";
 
         // DLQ
         await _consumeChannel.QueueDeclareAsync(dlqName, true, false, false, null);
-        
+
         // QUEUE
         var arguments = new Dictionary<string, object>
         {
             { "x-dead-letter-exchange", "" },
             { "x-dead-letter-routing-key", dlqName }
         };
-        
+
         await _consumeChannel.QueueDeclareAsync(queueName, true, false, false, arguments);
     }
 
     private int GetRetryCount(IBasicProperties properties)
     {
-        if (properties?.Headers != null && properties.Headers.TryGetValue("x-retry-count", out var retryCountObj))
+        if (
+            properties?.Headers != null
+            && properties.Headers.TryGetValue("x-retry-count", out var retryCountObj)
+        )
         {
             if (retryCountObj is byte[] retryCountBytes)
             {
@@ -131,22 +156,25 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
         try
         {
             await Task.Delay(_settings.RetryDelayMs);
-            
+
             var props = new BasicProperties
             {
                 Persistent = true,
-                Headers = new Dictionary<string, object> {
+                Headers = new Dictionary<string, object>
                 {
-                        "x-retry-count", retryCount
-                }, { "x-original-queue", originalQueue }, { "x-retry-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds() } }
+                    { "x-retry-count", retryCount },
+                    { "x-original-queue", originalQueue },
+                    { "x-retry-timestamp", DateTimeOffset.UtcNow.ToUnixTimeSeconds() }
+                }
             };
-            
+
             await _publishChannel.BasicPublishAsync(
                 exchange: "",
                 routingKey: originalQueue,
                 mandatory: false,
                 basicProperties: props,
-                body: ea.Body);
+                body: ea.Body
+            );
         }
         catch (System.Exception ex)
         {
@@ -170,14 +198,15 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
                     { "x-original-queue", ea.RoutingKey }
                 }
             };
-            
+
             await _publishChannel.BasicPublishAsync(
                 exchange: "",
                 routingKey: dlqName,
                 mandatory: false,
                 basicProperties: props,
-                body: ea.Body);
-                
+                body: ea.Body
+            );
+
             Console.WriteLine($"Mensagem enviada para DLQ: {dlqName}");
         }
         catch (System.Exception ex)
@@ -202,8 +231,11 @@ internal class RabbitMqMessageBus : IMessageBus, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (_publishChannel != null) await _publishChannel.DisposeAsync();
-        if (_consumeChannel != null) await _consumeChannel.DisposeAsync();
-        if (_connection != null) await _connection.DisposeAsync();
+        if (_publishChannel != null)
+            await _publishChannel.DisposeAsync();
+        if (_consumeChannel != null)
+            await _consumeChannel.DisposeAsync();
+        if (_connection != null)
+            await _connection.DisposeAsync();
     }
 }
