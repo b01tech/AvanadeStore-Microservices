@@ -1,45 +1,203 @@
+name: avanadestore-services
 services:
-    # SQL Server
-    sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        container_name: avanadestore-sqlserver
-        environment:
-            ACCEPT_EULA: Y
-            SA_PASSWORD: "AvanadeStore@2024"
-            MSSQL_PID: Express
+    # Auth API
+    auth-api:
+        build:
+            context: ..
+            dockerfile: AvanadeStore.Auth/src/Auth.API/Dockerfile
+        image: avanadestore-auth:dev
+        container_name: auth-api
         ports:
-            - "1433:1433"
-        volumes:
-            - sqlserver_data:/var/opt/mssql
+            - "5140:8080"
+        env_file: .env
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__AuthConnection=${AUTH_CONNECTION_STRING}
+            - Settings__SecretKey=${SECRET_KEY}
+            - Jwt__Secret=${JWT_SECRET}
+            - Jwt__Audience=${JWT_AUDIENCE}
+            - Jwt__Issuer=AvanadeStore
+        depends_on:
+            sqlserver:
+                condition: service_healthy
         networks:
             - avanadestore-net
-        restart: unless-stopped
+
+    # Inventory API
+    inventory-api:
+        build:
+            context: ..
+            dockerfile: AvanadeStore.Inventory/src/Inventory.API/Dockerfile
+        image: avanadestore-inventory:dev
+        container_name: inventory-api
+        ports:
+            - "5150:8080"
+        env_file: .env
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__InventoryConnection=${INVENTORY_CONNECTION_STRING}
+            - Jwt__Secret=${JWT_SECRET}
+            - Jwt__Audience=${JWT_AUDIENCE}
+            - Jwt__Issuer=AvanadeStore
+            - RabbitMQ__Host=${RABBITMQ_HOST}
+            - RabbitMQ__Port=${RABBITMQ_PORT}
+            - RabbitMQ__User=${RABBITMQ_USER}
+            - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+            - RabbitMQ__PrefetchCount=10
+        depends_on:
+            sqlserver:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_started
+        networks:
+            - avanadestore-net
+
+    # Sales API
+    sales-api:
+        build:
+            context: ..
+            dockerfile: AvanadeStore.Sales/src/Sales.API/Dockerfile
+        image: avanadestore-sales:dev
+        container_name: sales-api
+        ports:
+            - "5160:8080"
+        env_file: .env
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__SalesConnection=${SALES_CONNECTION_STRING}
+            - Jwt__Secret=${JWT_SECRET}
+            - Jwt__Audience=${JWT_AUDIENCE}
+            - Jwt__Issuer=AvanadeStore
+            - RabbitMQ__Host=${RABBITMQ_HOST}
+            - RabbitMQ__Port=${RABBITMQ_PORT}
+            - RabbitMQ__User=${RABBITMQ_USER}
+            - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+            - RabbitMQ__PrefetchCount=10
+        depends_on:
+            sqlserver:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_started
+        networks:
+            - avanadestore-net
+
+    # Gateway API
+    gateway:
+        build:
+            context: ..
+            dockerfile: AvanadeStore.Gateway/src/Gateway.API/Dockerfile
+        image: avanadestore-gateway:dev
+        container_name: gateway
+        ports:
+            - "5100:8080"
+        env_file: .env
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+            - ConnectionStrings__AuthConnection=${AUTH_CONNECTION_STRING}
+            - ConnectionStrings__InventoryConnection=${INVENTORY_CONNECTION_STRING}
+            - ConnectionStrings__SalesConnection=${SALES_CONNECTION_STRING}
+            - Jwt__Secret=${JWT_SECRET}
+            - Jwt__Audience=${JWT_AUDIENCE}
+            - Jwt__ExpireMinutes=${JWT_EXPIRE_MINUTES}
+            - RabbitMQ__Host=${RABBITMQ_HOST}
+            - RabbitMQ__Port=${RABBITMQ_PORT}
+            - RabbitMQ__User=${RABBITMQ_USER}
+            - RabbitMQ__Password=${RABBITMQ_PASSWORD}
+            - Settings__SecretKey=${SECRET_KEY}
+        depends_on:
+            auth-api:
+                condition: service_started
+            inventory-api:
+                condition: service_started
+            sales-api:
+                condition: service_started
+            rabbitmq:
+                condition: service_started
+            sqlserver:
+                condition: service_healthy
+        networks:
+            - avanadestore-net
 
     # RabbitMQ
     rabbitmq:
         image: rabbitmq:3-management
-        container_name: avanadestore-rabbitmq
-        environment:
-            RABBITMQ_DEFAULT_USER: admin
-            RABBITMQ_DEFAULT_PASS: admin123
+        container_name: rabbitmq
         ports:
             - "5672:5672"
             - "15672:15672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
         networks:
             - avanadestore-net
-        restart: unless-stopped
 
-# Volumes
-volumes:
-    sqlserver_data:
-        driver: local
-    rabbitmq_data:
-        driver: local
+    # SQL Server
+    sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: sqlserver
+        ports:
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=AvanadeStore@2024
+            - MSSQL_PID=Express
+        volumes:
+            - sqlserver_data:/var/opt/mssql
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "timeout 1 bash -c '</dev/tcp/localhost/1433' || exit 1",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 30s
+        networks:
+            - avanadestore-net
 
-# Network
+    # Prometheus
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        ports:
+            - "9090:9090"
+        volumes:
+            - ./Settings/prometheus.yaml:/etc/prometheus/prometheus.yml
+            - prometheus_data:/prometheus
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--web.console.libraries=/etc/prometheus/console_libraries"
+            - "--web.console.templates=/etc/prometheus/consoles"
+            - "--storage.tsdb.retention.time=200h"
+            - "--web.enable-lifecycle"
+        networks:
+            - avanadestore-net
+
+    # Grafana
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        ports:
+            - "3000:3000"
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=admin
+        volumes:
+            - grafana_data:/var/lib/grafana
+        networks:
+            - avanadestore-net
+
+# Networks
 networks:
     avanadestore-net:
         driver: bridge
-        name: avanadestore-network
+
+# Volumes
+volumes:
+    rabbitmq_data:
+    sqlserver_data:
+    prometheus_data:
+    grafana_data:
