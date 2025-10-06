@@ -2,12 +2,13 @@
 
 ## 📋 Visão Geral
 
-O **AvanadeStore** é uma aplicação de e-commerce desenvolvida utilizando arquitetura de microserviços com .NET 9.
+O **AvanadeStore** é uma aplicação de e-commerce desenvolvida utilizando arquitetura de microserviços com .NET 9.  
 O projeto implementa as melhores práticas de desenvolvimento, incluindo Clean Architecture, Domain-Driven Design (DDD) e comunicação assíncrona entre serviços.
 
 ## 🏗️ Arquitetura
 
-O sistema é composto por 4 microserviços principais:
+O sistema é composto por 3 microserviços principais:
+ 
 ![AvanadeStore-Microservices-Containers](./Diagrams/AvanadeStore-Microservices-Containers.drawio.png)
 
 ### 🔐 Auth Service (Autenticação)
@@ -28,7 +29,7 @@ O sistema é composto por 4 microserviços principais:
     -   Controle de quantidades em estoque
     -   Categorização de produtos
     -   Consumo de mensagens de pedidos finalizados
--   **Porta**: `5141`
+-   **Porta**: `5150`
 
 ### 💰 Sales Service (Vendas)
 
@@ -38,7 +39,7 @@ O sistema é composto por 4 microserviços principais:
     -   Processamento de vendas com diferentes status
     -   Histórico de transações
     -   Publicação de eventos via RabbitMQ
--   **Porta**: `5142`
+-   **Porta**: `5160`
 
 ### 🌐 Gateway Service (API Gateway)
 
@@ -47,7 +48,7 @@ O sistema é composto por 4 microserviços principais:
     -   Roteamento de requisições com Ocelot
     -   Balanceamento de carga
     -   Autenticação centralizada JWT
--   **Porta**: `5000`
+-   **Porta**: `5100`
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -232,11 +233,6 @@ Cada microserviço possui documentação interativa usando **Scalar**:
 
 **Legenda**: 🔑 = Requer autenticação
 
-##
-
-### Variáveis de Ambiente
-
-Cada serviço pode ser configurado através de variáveis de ambiente ou arquivos `appsettings.json`:
 
 ## 📊 Monitoramento
 
@@ -250,7 +246,8 @@ Acesse o painel de monitoramento do Prometheus em: `http://localhost:9090`
 
 ### Grafana
 
-Acesse o painel de monitoramento do Grafana em: `http://localhost:3000`
+Acesse o painel de monitoramento do Grafana em: `http://localhost:3000`   
+O dashboard para import encontra-se em `AvanadeStore.Gateway/Monitoring/avanadestore-dashboard.json`
 
 ![dashboard-grafana-avanadestore-example](./Diagrams/dashbord-grafana-avanadestore-example.jpg)
 
