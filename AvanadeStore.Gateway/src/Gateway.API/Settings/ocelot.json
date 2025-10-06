@@ -15,8 +15,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-auth-api",
-                    "Port": 80
+                    "Host": "auth-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/auth/client",
@@ -27,8 +27,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-auth-api",
-                    "Port": 80
+                    "Host": "auth-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/auth/employee",
@@ -39,8 +39,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-auth-api",
-                    "Port": 80
+                    "Host": "auth-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/auth/login/email",
@@ -51,8 +51,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-auth-api",
-                    "Port": 80
+                    "Host": "auth-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/auth/login/cpf",
@@ -63,8 +63,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-inventory-api",
-                    "Port": 80
+                    "Host": "inventory-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/inventory/product",
@@ -79,8 +79,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-inventory-api",
-                    "Port": 80
+                    "Host": "inventory-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/inventory/product/",
@@ -95,8 +95,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-inventory-api",
-                    "Port": 80
+                    "Host": "inventory-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/inventory/product/{everything}",
@@ -111,8 +111,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-sales-api",
-                    "Port": 80
+                    "Host": "sales-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/sales/order",
@@ -127,8 +127,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-sales-api",
-                    "Port": 80
+                    "Host": "sales-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/sales/order/",
@@ -143,8 +143,8 @@
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avanadestore-sales-api",
-                    "Port": 80
+                    "Host": "sales-api",
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/sales/order/{everything}",
