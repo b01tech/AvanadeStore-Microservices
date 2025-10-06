@@ -8,7 +8,7 @@ O projeto implementa as melhores práticas de desenvolvimento, incluindo Clean A
 ## 🏗️ Arquitetura
 
 O sistema é composto por 4 microserviços principais:
-![AvanadeStore-Microservices-Containers](C:\dev\AvanadeStore-Microservices\Diagrams\AvanadeStore-Microservices-Containers.drawio.png)
+![AvanadeStore-Microservices-Containers](./Diagrams/AvanadeStore-Microservices-Containers.drawio.png)
 
 ### 🔐 Auth Service (Autenticação)
 
@@ -252,7 +252,7 @@ Acesse o painel de monitoramento do Prometheus em: `http://localhost:9090`
 
 Acesse o painel de monitoramento do Grafana em: `http://localhost:3000`
 
-![dashboard-grafana-avanadestore-example](C:\dev\AvanadeStore-Microservices\Diagrams\dashbord-grafana-avanadestore-example.jpg)
+![dashboard-grafana-avanadestore-example](./Diagrams/dashbord-grafana-avanadestore-example.jpg)
 
 ### Logs
 
@@ -285,22 +285,6 @@ dotnet test --collect "XPlat Code Coverage" --results-directory ./TestResults
 ```
 
 Logs mais verbosos: use `-l "console;verbosity=detailed"` para investigar falhas.
-
-## 📈 Diagramas
-
-Os diagramas da arquitetura estão disponíveis na pasta `./Diagrams/`:
-
--   **System Context**: Visão geral do sistema
--   **Containers**: Arquitetura de containers
--   **Fluxo de Pedido**: Fluxo de processamento de pedidos
--   **Entidades**: Diagrama de entidades e relacionamentos do banco de dados
-
-Links rápidos:
-
--   `./Diagrams/AvanadeStore-Microservices-System-Context.drawio.png`
--   `./Diagrams/AvanadeStore-Microservices-Containers.drawio.png`
--   `./Diagrams/AvanadeStore-Microservices-Fluxo-pedido.drawio.png`
--   `./Diagrams/AvanadeStore-Microservices-ERD.drawio.png`
 
 ## 🔌 Gateway – Rotas e Testes de Endpoints
 
