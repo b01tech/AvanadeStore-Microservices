@@ -60,6 +60,7 @@ O sistema é composto por 3 microserviços principais:
 -   **JWT** - Autenticação e autorização
 -   **Scalar** - Documentação interativa da API
 -   **Tratamento Global de Exceções** - Middleware customizado para captura e tratamento de erros
+-   **GitHub Actions** - Pipeline CI/CD (workflows em `.github/workflows/ci.yaml`)
 
 ## 📁 Estrutura do Projeto
 
