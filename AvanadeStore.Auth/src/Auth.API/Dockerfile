@@ -9,14 +9,14 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0-bookworm-slim AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Auth.API/Auth.API.csproj", "src/Auth.API/"]
-COPY ["src/Auth.Application/Auth.Application.csproj", "src/Auth.Application/"]
-COPY ["src/Auth.Domain/Auth.Domain.csproj", "src/Auth.Domain/"]
-COPY ["src/Auth.Exception/Auth.Exception.csproj", "src/Auth.Exception/"]
-COPY ["src/Auth.Infra/Auth.Infra.csproj", "src/Auth.Infra/"]
-RUN dotnet restore "./src/Auth.API/Auth.API.csproj"
+COPY ["AvanadeStore.Auth/src/Auth.API/Auth.API.csproj", "AvanadeStore.Auth/src/Auth.API/"]
+COPY ["AvanadeStore.Auth/src/Auth.Application/Auth.Application.csproj", "AvanadeStore.Auth/src/Auth.Application/"]
+COPY ["AvanadeStore.Auth/src/Auth.Domain/Auth.Domain.csproj", "AvanadeStore.Auth/src/Auth.Domain/"]
+COPY ["AvanadeStore.Auth/src/Auth.Exception/Auth.Exception.csproj", "AvanadeStore.Auth/src/Auth.Exception/"]
+COPY ["AvanadeStore.Auth/src/Auth.Infra/Auth.Infra.csproj", "AvanadeStore.Auth/src/Auth.Infra/"]
+RUN dotnet restore "./AvanadeStore.Auth/src/Auth.API/Auth.API.csproj"
 COPY . .
-WORKDIR "/src/src/Auth.API"
+WORKDIR "/src/AvanadeStore.Auth/src/Auth.API"
 RUN dotnet build "./Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # PUBLISH
