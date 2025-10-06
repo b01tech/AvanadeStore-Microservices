@@ -82,7 +82,7 @@ public class OrderValidationConsumerService : BackgroundService
         var orderItem = order.OrderItems.FirstOrDefault(oi => oi.ProductId == validatedItem.ProductId);
         if (orderItem != null)
         {
-            orderItem.UpdatePrice(validatedItem.Price);
+            order.UpdateOrderItemPrice(validatedItem.ProductId, validatedItem.Price);
             _logger.LogInformation("Updated price for Product ID: {ProductId} to {Price}",
                 validatedItem.ProductId, validatedItem.Price);
         }
