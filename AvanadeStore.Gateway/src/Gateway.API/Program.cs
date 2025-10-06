@@ -11,11 +11,13 @@ builder.Configuration.AddOcelotConfigurations();
 
 builder.Services.AddApiDocumentation()
     .AddJwtAuthentication(builder.Configuration)
+    .AddCorsPolicy(builder.Configuration)
     .AddOcelot();
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseCorsPolicy();
 app.UseHttpMetrics();
 app.MapApiDocumentation();
 app.UseMetricServer("/metrics");

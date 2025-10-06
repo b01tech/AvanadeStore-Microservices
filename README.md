@@ -50,6 +50,31 @@ O sistema é composto por 3 microserviços principais:
     -   Autenticação centralizada JWT
 -   **Porta**: `5100`
 
+#### 🔐 CORS no Gateway
+
+-   Políticas de CORS são centralizadas no Gateway e configuradas via `appsettings` ou variáveis de ambiente do Docker.
+-   Em desenvolvimento, o `docker-compose` já define origens comuns de frontends locais usando o formato de array por índices:
+
+```yaml
+gateway:
+  environment:
+    - Cors__AllowedOrigins__0=http://localhost:5173
+    - Cors__AllowedOrigins__1=http://localhost:3000
+    - Cors__AllowedOrigins__2=http://localhost:4200
+```
+
+-   Em produção, mantenha uma lista fechada de domínios confiáveis. Também é possível configurar via `appsettings.json`:
+
+```json
+{
+  "Cors": {
+    "AllowedOrigins": [
+      "https://www.seu-dominio.com",
+      "https://app.seu-dominio.com"
+    ]
+  }
+}
+```
 ## 🛠️ Tecnologias Utilizadas
 
 -   **.NET 9** - Framework principal
